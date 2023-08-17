@@ -15,6 +15,12 @@
 
 <header>
     <h1>Список самолетов</h1>
+    <nav>
+        <a th:href="@{/all-maintenance}">обслуживание</a>
+        <a th:href="@{/all-workers}">Работники</a>
+        <a th:href="@{/components}">Компоненты</a>
+
+    </nav>
 </header>
 <main>
     <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;New Aircraft</a>

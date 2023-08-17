@@ -74,15 +74,15 @@ public class Component {
     }
 
     // Add any other methods for the Component class as needed
-    private int maintenanceRecordCount; // Поле для хранения количества записей об обслуживании
+//    private int maintenanceRecordCount; // Поле для хранения количества записей об обслуживании
 
     // Метод для получения количества записей об обслуживании
-    public int getMaintenanceRecordCount() {
-        return maintenanceRecordCount;
-    }
+//    public int getMaintenanceRecordCount() {
+//        return maintenanceRecordCount;
+//    }
 
     // Метод для установки количества записей об обслуживании
-    public void setMaintenanceRecordCount(int maintenanceRecordCount) {
-        this.maintenanceRecordCount = maintenanceRecordCount;
-    }
+//    public void setMaintenanceRecordCount(int maintenanceRecordCount) {
+//        this.maintenanceRecordCount = maintenanceRecordCount;
+//    }
 }

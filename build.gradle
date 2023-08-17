@@ -1,17 +1,26 @@
-plugins {
-    id 'org.springframework.boot' version '2.7.5'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
-}
-apply plugin: 'application'
+buildscript {
+    ext { springBootVersion = '2.7.5'}
+    repositories { mavenCentral() }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }}
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-mainClassName = "main.java.com.divibi.ams.AmsApplication"
 group = 'com.divibi'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+//mainClassName = "main.java.com.divibi.ams.AmsApplication"
+group = 'com.divibi'
+version = '0.0.1-SNAPSHOT'
+
+
 repositories {
+
     mavenCentral()
+
 }
 
 dependencies {
@@ -20,8 +29,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework:spring-expression'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'com.google.cloud.tools:appengine-gradle-plugin:2.2.0'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
