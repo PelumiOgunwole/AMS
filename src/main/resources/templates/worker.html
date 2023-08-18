@@ -21,13 +21,15 @@
   </nav>
 </header>
 <main>
-  <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;Новый работник</a>
+  <button id="showFormButton" class="btn btn-dark">New Worker</button>
+<!--  <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;Новый работник</a>-->
   <input type="search" id="searchField" placeholder="Поиск по имени">
   <table id="workerTable">
     <thead>
     <tr>
       <th>ID</th>
       <th>Имя</th>
+      <th>Фамилия</th>
       <th>Должность</th>
       <th>Обновлять</th>
       <th>Удалить</th>
@@ -37,10 +39,10 @@
     <tbody>
     <!-- Здесь будут отображаться данные о работниках -->
       <tr th:each="worker: ${listOfWorker} ">
-        <td th:text="${worker.getWorkerId()}"></td>
-        <td th:text="${worker.getFirstName()}"></td>
-        <td th:text="${worker.getLastName()}"></td>
-        <td th:text="${worker.getJobTitle()}"></td>
+        <td th:text="*{worker.workerId}"></td>
+        <td th:text="${worker.firstName}"></td>
+        <td th:text="${worker.lastName}"></td>
+        <td th:text="${worker.jobTitle}"></td>
         <td><a th:href="@{/show-update-worker-form/{id}(id=${worker.workerId})}" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
         <td><a th:href="@{/delete-worker/{id}(id=${worker.workerId})}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
 
@@ -73,8 +75,35 @@
     </div>
   </div>
 </main>
+<div id="modalContainer"></div>
 <footer>
   Подвал сайта
 </footer>
+<script>
+  document.getElementById('showFormButton').addEventListener('click', function() {
+    console.log("Hello");
+    loadModalContent();
+  });
+
+  function loadModalContent() {
+    var modalContainer = document.getElementById('modalContainer');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/show-new-worker', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          modalContainer.innerHTML = xhr.responseText;
+          $('#worker').modal('show'); // Show the modal
+        } else {
+          alert("Failed to load modal")
+        }
+      }
+    };
+    xhr.send();
+  }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

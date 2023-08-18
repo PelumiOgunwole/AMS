@@ -62,9 +62,9 @@ table {
     border-collapse: collapse;
     overflow: scroll;
 }
-div{
-    overflow: scroll;
-}
+/*div{*/
+/*    overflow: scroll;*/
+/*}*/
 table, th, td {
     border: 1px solid #ddd;
     padding: 1em;
