@@ -2,6 +2,7 @@ package com.divibi.ams.controller;
 
 import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.MaintenanceRecord;
+import com.divibi.ams.model.Worker;
 import com.divibi.ams.service.MaintenanceRecordService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,32 @@ public class MaintenanceRecordController {
     public String saveAircraft(@ModelAttribute("maintenance") MaintenanceRecord maintenanceRecord) {
         maintenanceRecordService.saveMaintenanceRecord(maintenanceRecord);
         return "redirect:/all-maintenance";
+    }
+    @GetMapping("/search-maintenance")
+    public ResponseEntity<String> searchMaintenanceRecords(@RequestParam("keyword") String keyword) {
+        List<MaintenanceRecord> filteredWorkers = maintenanceRecordService.findMaintenanceByKeyWord(keyword);
+        String updatedTableContent = generateTableMarkup(filteredWorkers);
+        return ResponseEntity.ok(updatedTableContent);
+    }
+
+    private String generateTableMarkup(List<MaintenanceRecord> workers) {
+        StringBuilder tableMarkup = new StringBuilder();
+        tableMarkup.append("<table>");
+
+        // Add table rows
+        for (MaintenanceRecord worker : workers) {
+            tableMarkup.append("<tr>");
+            tableMarkup.append("<td>").append(worker.getMaintenanceId()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getMaintenanceDate()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getDescription()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getComponentId()).append("</td>");
+            tableMarkup.append("<td><a th:href=\"@{'/show-update-maintenance-form/' + ${worker.workerId}}\" class=\"btn btn-dark\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\"></i></a></td>");
+            tableMarkup.append("<td><a th:href=\"@{'/delete-maintenance-record/' + ${worker.workerId}}\" class=\"btn btn-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>");
+            tableMarkup.append("</tr>");
+        }
+
+        tableMarkup.append("</tbody></table>");
+        return tableMarkup.toString();
     }
     @GetMapping("/show-update-maintenance-form/{id}")
     public String showUpdateAircraftForm(@PathVariable (value = "id") Integer id, Model model) {

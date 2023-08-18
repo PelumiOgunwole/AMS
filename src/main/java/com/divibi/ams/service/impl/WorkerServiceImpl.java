@@ -64,6 +64,14 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
+    public List<Worker> findWorkerByKeyWord(String keyword) {
+        if(keyword!=null){
+            return workerRepository.searchByKeyword(keyword);
+        }
+        return (List<Worker>) workerRepository.findAll();
+    }
+
+    @Override
     public Page<Worker> findPaginated(Integer pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo-1,pageSize);
         return workerRepository.findAll(pageable);

@@ -2,6 +2,7 @@ package com.divibi.ams.controller;
 
 import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.Worker;
+import com.divibi.ams.repository.WorkerRepository;
 import com.divibi.ams.service.WorkerService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,12 @@ import java.util.List;
 public class WorkerController {
 
     private final WorkerService workerService;
+    private final WorkerRepository workerRepository;
 
-    public WorkerController(WorkerService workerService) {
+    public WorkerController(WorkerService workerService,
+                            WorkerRepository workerRepository) {
         this.workerService = workerService;
+        this.workerRepository = workerRepository;
     }
 
     @RequestMapping(value = "/all-workers",method = RequestMethod.GET  )
@@ -32,6 +36,33 @@ public class WorkerController {
         Worker worker = new Worker();
         model.addAttribute("worker",worker);
         return "new_worker";
+    }
+
+    @GetMapping("/search-worker")
+public ResponseEntity<String> searchWorkers(@RequestParam("keyword") String keyword) {
+    List<Worker> filteredWorkers = workerRepository.searchByKeyword(keyword);
+    String updatedTableContent = generateTableMarkup(filteredWorkers);
+    return ResponseEntity.ok(updatedTableContent);
+}
+
+    private String generateTableMarkup(List<Worker> workers) {
+        StringBuilder tableMarkup = new StringBuilder();
+        tableMarkup.append("<table>");
+
+        // Add table rows
+        for (Worker worker : workers) {
+            tableMarkup.append("<tr>");
+            tableMarkup.append("<td>").append(worker.getWorkerId()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getFirstName()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getLastName()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getJobTitle()).append("</td>");
+            tableMarkup.append("<td><a th:href=\"@{'/show-update-worker-form/' + ${worker.workerId}}\" class=\"btn btn-dark\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\"></i></a></td>");
+            tableMarkup.append("<td><a th:href=\"@{'/delete-worker/' + ${worker.workerId}}\" class=\"btn btn-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>");
+            tableMarkup.append("</tr>");
+        }
+
+        tableMarkup.append("</tbody></table>");
+        return tableMarkup.toString();
     }
     @PostMapping("/save-worker-details")
     public String saveWorkerDetails(@ModelAttribute("worker") Worker worker) {

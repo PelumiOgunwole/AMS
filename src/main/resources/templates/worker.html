@@ -24,6 +24,7 @@
   <button id="showFormButton" class="btn btn-dark">New Worker</button>
 <!--  <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;Новый работник</a>-->
   <input type="search" id="searchField" placeholder="Поиск по имени">
+  <button id="searchButton" class="btn btn-primary">Поиск</button>
   <table id="workerTable">
     <thead>
     <tr>
@@ -96,6 +97,27 @@
           $('#worker').modal('show'); // Show the modal
         } else {
           alert("Failed to load modal")
+        }
+      }
+    };
+    xhr.send();
+  }
+
+
+  document.getElementById("searchButton").addEventListener("click", function() {
+    var keyword = document.getElementById("searchField").value;
+    performSearch(keyword);
+  });
+
+  function performSearch(keyword) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/search-worker?keyword=' + keyword, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          document.querySelector("#workerTable tbody").innerHTML = xhr.responseText;
+        } else {
+          alert("Failed to perform search");
         }
       }
     };

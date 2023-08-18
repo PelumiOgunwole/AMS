@@ -17,6 +17,7 @@ public interface WorkerService {
     Worker updateWorker(Integer id, Worker worker);
 
     void deleteWorker(Integer id);
+    List<Worker> findWorkerByKeyWord(String keyword);
 
     Page<Worker> findPaginated(Integer pageNo, int pageSize);
 }

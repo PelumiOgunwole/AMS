@@ -22,9 +22,9 @@
     </nav>
 </header>
 <main>
-    <button id="showMaintFormButton" class="btn btn-dark">New Maintenance Record</button>
-<!--    <a th:href="@{/show-new-maintenance-form}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;New Record</a>-->
+    <button id="showMaintFormButton" class="btn btn-dark">New Maintenance Record</button
     <input type="search" id="searchField" placeholder="Поиск по описанию">
+    <button id="searchButton" class="btn btn-primary">Поиск</button>
     <table id="maintenanceTable">
         <thead>
         <tr>
@@ -98,6 +98,26 @@
                     $('#newMaintenanceModal').modal('show'); // Show the modal
                 } else {
                     alert("Failed to load modal")
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    document.getElementById("searchButton").addEventListener("click", function() {
+        var keyword = document.getElementById("searchField").value;
+        performSearch(keyword);
+    });
+
+    function performSearch(keyword) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/search-maintenance=' + keyword, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    document.querySelector("#maintenanceTable tbody").innerHTML = xhr.responseText;
+                } else {
+                    alert("Failed to perform search");
                 }
             }
         };

@@ -1,6 +1,7 @@
 package com.divibi.ams.service.impl;
 
 import com.divibi.ams.model.Aircraft;
+import com.divibi.ams.model.Worker;
 import com.divibi.ams.repository.AircraftRepository;
 import com.divibi.ams.service.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,14 @@ public class AircraftServiceImpl implements AircraftService {
         }
         return null;
 
+    }
+
+    @Override
+    public List<Aircraft> findAirCraftByKeyWord(String keyword) {
+        if(keyword!=null){
+            return aircraftRepository.searchByKeyword(keyword);
+        }
+        return (List<Aircraft>) aircraftRepository.findAll();
     }
 
     @Override

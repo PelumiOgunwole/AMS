@@ -1,5 +1,6 @@
 package com.divibi.ams.service.impl;
 
+import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.MaintenanceRecord;
 import com.divibi.ams.repository.MaintenanceRecordRepository;
 import com.divibi.ams.service.MaintenanceRecordService;
@@ -66,6 +67,14 @@ public class MaintenanceRecordServiceImpl implements MaintenanceRecordService {
 
         }
         return null;
+    }
+
+    @Override
+    public List<MaintenanceRecord> findMaintenanceByKeyWord(String keyword) {
+        if(keyword!=null){
+            return maintenanceRecordRepository.searchByKeyword(keyword);
+        }
+        return (List<MaintenanceRecord>) maintenanceRecordRepository.findAll();
     }
 
     @Override

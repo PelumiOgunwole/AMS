@@ -2,6 +2,7 @@ package com.divibi.ams.service.impl;
 
 import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.Component;
+import com.divibi.ams.model.Worker;
 import com.divibi.ams.repository.ComponentRepository;
 import com.divibi.ams.service.ComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,14 @@ public class ComponentServiceImpl implements ComponentService {
             return componentRepository.save(originalComp);
         }
         return null;
+    }
+
+    @Override
+    public List<Component> findComponentByKeyWord(String keyword) {
+        if(keyword!=null){
+            return componentRepository.searchByKeyword(keyword);
+        }
+        return (List<Component>) componentRepository.findAll();
     }
 
     @Override

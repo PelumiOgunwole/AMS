@@ -1,9 +1,11 @@
 package com.divibi.ams.controller;
 
 import com.divibi.ams.model.Aircraft;
+import com.divibi.ams.model.Worker;
 import com.divibi.ams.service.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,32 @@ public class AircraftController {
     public String saveAircraft(@ModelAttribute("aircraft") Aircraft aircraft) {
         aircraftService.saveAircraft(aircraft);
         return "redirect:/all-aircrafts";
+    }
+    @GetMapping("/search-aircraft")
+    public ResponseEntity<String> searchAircraft(@RequestParam("keyword") String keyword) {
+        List<Aircraft> filteredAircraft = aircraftService.findAirCraftByKeyWord(keyword);
+        String updatedTableContent = generateTableMarkup(filteredAircraft);
+        return ResponseEntity.ok(updatedTableContent);
+    }
+
+    private String generateTableMarkup(List<Aircraft> workers) {
+        StringBuilder tableMarkup = new StringBuilder();
+        tableMarkup.append("<table>");
+
+        // Add table rows
+        for (Aircraft worker : workers) {
+            tableMarkup.append("<tr>");
+            tableMarkup.append("<td>").append(worker.getAircraftId()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getAircraftCode()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getAircraftModel()).append("</td>");
+            tableMarkup.append("<td>").append(worker.getTotalFlightHours()).append("</td>");
+            tableMarkup.append("<td><a th:href=\"@{'/show-update-aircraft-form/' + ${worker.aircraftId}}\" class=\"btn btn-dark\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\"></i></a></td>");
+            tableMarkup.append("<td><a th:href=\"@{'/delete-aircraft/' + ${worker.aircraftId}}\" class=\"btn btn-danger\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>");
+            tableMarkup.append("</tr>");
+        }
+
+        tableMarkup.append("</tbody></table>");
+        return tableMarkup.toString();
     }
     @GetMapping("/show-update-aircraft-form/{id}")
     public String showUpdateAircraftForm(@PathVariable (value = "id") Integer id, Model model) {

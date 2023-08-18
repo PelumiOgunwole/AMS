@@ -24,6 +24,7 @@
     <button id="showCompFormButton" class="btn btn-dark">New Component</button>
 <!--    <a th:href="@{/show-new-component}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;New Component</a>-->
     <input type="search" id="searchField" placeholder="Поиск по имени">
+    <button id="searchButton" class="btn btn-primary">Поиск</button>
     <table id="componentsTable">
         <thead>
         <tr>
@@ -98,6 +99,25 @@
                     $('#newComponentModal').modal('show'); // Show the modal
                 } else {
                     alert("Failed to load modal")
+                }
+            }
+        };
+        xhr.send();
+    }
+    document.getElementById("searchButton").addEventListener("click", function() {
+        var keyword = document.getElementById("searchField").value;
+        performSearch(keyword);
+    });
+
+    function performSearch(keyword) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/search-component?keyword=' + keyword, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    document.querySelector("#componentsTable tbody").innerHTML = xhr.responseText;
+                } else {
+                    alert("Failed to perform search");
                 }
             }
         };
