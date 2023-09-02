@@ -11,12 +11,12 @@ public interface ComponentService {
 
     List<Component> getAllComponents();
 
-    Component getComponentById(Integer id);
+    Component getComponentById(Long id);
 
     Component saveComponent(Component component);
 
-    Component updateComponent(Integer id, Component component);
+//    Component updateComponent(Long id, Component component);
     List<Component> findComponentByKeyWord(String keyword);
-    void deleteComponent(Integer id);
+    void deleteComponent(Long id);
     Page<Component> findPaginated(int pageNo, int pageSize);
 }

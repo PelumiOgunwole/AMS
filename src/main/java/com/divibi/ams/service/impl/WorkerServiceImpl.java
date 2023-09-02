@@ -30,7 +30,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public Worker getWorkerById(Integer id) {
+    public Worker getWorkerById(Long id) {
         Optional<Worker> worker = workerRepository.findById(id);  // Используем метод JpaRepository для получения работника по его ID
 
         if (worker.isPresent()) {
@@ -46,18 +46,18 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public Worker updateWorker(Integer id, Worker workerDetails) {
+    public Worker updateWorker(Long id, Worker workerDetails) {
         Worker worker = getWorkerById(id);  // Используем наш метод для получения работника по его ID
 
-        worker.setFirstName(workerDetails.getFirstName());
-        worker.setLastName(workerDetails.getLastName());
-        worker.setJobTitle(workerDetails.getJobTitle());
+        worker.setName(workerDetails.getName());
+        worker.setPosition(workerDetails.getPosition());
+        worker.setContactInfo(workerDetails.getContactInfo());
 
         return workerRepository.save(worker);  // Используем метод JpaRepository для сохранения обновленного работника
     }
 
     @Override
-    public void deleteWorker(Integer id) {
+    public void deleteWorker(Long id) {
         Worker worker = getWorkerById(id);  // Используем наш метод для получения работника по его ID
 
         workerRepository.delete(worker);  // Используем метод JpaRepository для удаления работника

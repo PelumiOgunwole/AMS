@@ -7,25 +7,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name="worker")
+@Table(name = "suppliers")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Worker {
+public class Suppliers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "worker_id")
-    private Long workerId;
+    @Column(name = "supplier_id")
+    private  Long supplier_id;
     @Column(name = "name")
-    private String Name;
-    @Column(name = "position")
-    private String position;
+    private  String Name;
     @Column(name = "contact_info")
-    private String contactInfo;
-    // Add other attributes for the worker as needed
+    private  String contactInfo;
+
+    // Mapping to component meaning  many suppliers to 1 component
     @ManyToOne
-    @JoinColumn(name = "aircraft_id")
-    private Aircraft  aircraft;
+    @JoinColumn(name = "component_id")
+    private Component component;
 
 }
-

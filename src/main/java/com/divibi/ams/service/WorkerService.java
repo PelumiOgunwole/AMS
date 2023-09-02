@@ -10,13 +10,13 @@ public interface WorkerService {
 
     List<Worker> getAllWorkers();
 
-    Worker getWorkerById(Integer id);
+    Worker getWorkerById(Long id);
 
     Worker saveWorker(Worker worker);
 
-    Worker updateWorker(Integer id, Worker worker);
+    Worker updateWorker(Long id, Worker worker);
 
-    void deleteWorker(Integer id);
+    void deleteWorker(Long id);
     List<Worker> findWorkerByKeyWord(String keyword);
 
     Page<Worker> findPaginated(Integer pageNo, int pageSize);

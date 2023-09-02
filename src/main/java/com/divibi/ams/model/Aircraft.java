@@ -1,69 +1,76 @@
 package com.divibi.ams.model;
 
+//import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="aircraft")
 public class Aircraft {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aircraft_id")
-    private int aircraftId;
-    @Column(name = "aircraft_code")
-    private String aircraftCode;
-    @Column(name = "aircraft_model")
-    private String aircraftModel;
-    @Column(name = "total_flight_hours")
-    private int totalFlightHours;
-    // Add other aircraft attributes as needed
+    private Long aircraftId;
+    @Column(name = "flight_hours")
+    @NotNull
+    @Min(value = 1, message = "Value must be greater than or equal to 1")
+    private double totalFlightHours;
+    @Column(name = "tail_number")
+    @NotEmpty(message = "Field must not be empty")
+    private String tailNumber;
+    @Column(name = "serial_number")
+    @NotEmpty(message = "Field must not be empty")
+    private String serialNumber;
+    @Column(name = "manufacturer")
+    @NotEmpty(message = "Field must not be empty")
+    private String manufacturer;
+    @Column(name = "type")
+    @NotEmpty(message = "Field must not be empty")
+    private String type;
+    @Column(name = "capacity")
+    @Min(value = 1, message = "Value must be greater than or equal to 1")
+    @NotNull(message = "Field must not be empty")
+    private int capacity;
+    @Column(name = "base_location")
+    @NotEmpty(message = "Field must not be empty")
+    private String baseLocation;
+    @Column(name = "current_location")
+    @NotEmpty(message = "Field must not be empty")
+    private String currentLocation;
+    @Column(name = "technical_status")
+    @NotEmpty(message = "Field must not be empty")
+    private String technicalStatus;
 
-    public Aircraft(int aircraftId, String aircraftCode, String aircraftModel, int totalFlightHours) {
-        this.aircraftId = aircraftId;
-        this.aircraftCode = aircraftCode;
-        this.aircraftModel = aircraftModel;
-        this.totalFlightHours = totalFlightHours;
-        // Initialize other aircraft attributes as needed
-    }
+    @Column(name = "last_repair_date")
+    @Temporal(value = TemporalType.DATE)
+//    @NotNull
+    private Date lastRepairDate;
 
-    public Aircraft() {
+    @Column(name = "next_maintenance_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @NotNull
+    private Date nextMaintenanceDate;
 
-    }
+    @Column(name = "deferred_maintenance_tasks")
+    @NotNull(message = "Field must not be empty")
+    @Min(value = 0, message = "Value must be greater than or equal to 0")
+    private Long deferredMaintenanceTasks;
 
-    // Add getters and setters for all attributes
+    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<Worker> workers = new HashSet<Worker>() ;
 
-    public int getAircraftId() {
-        return aircraftId;
-    }
+    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<Component>  components = new ArrayList<Component>();
 
-    public void setAircraftId(int aircraftId) {
-        this.aircraftId = aircraftId;
-    }
-
-    public String getAircraftCode() {
-        return aircraftCode;
-    }
-
-    public void setAircraftCode(String aircraftCode) {
-        this.aircraftCode = aircraftCode;
-    }
-
-    public String getAircraftModel() {
-        return aircraftModel;
-    }
-
-    public void setAircraftModel(String aircraftModel) {
-        this.aircraftModel = aircraftModel;
-    }
-
-    public int getTotalFlightHours() {
-        return totalFlightHours;
-    }
-
-    public void setTotalFlightHours(int totalFlightHours) {
-        this.totalFlightHours = totalFlightHours;
-    }
-
-    // Add other setters and getters for other aircraft attributes as needed
-
-    // Add other methods as needed
 }

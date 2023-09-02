@@ -32,7 +32,7 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     @Override
-    public Component getComponentById(Integer id) {
+    public Component getComponentById(Long id) {
         Optional<Component> component = componentRepository.findById(id);  // Используем метод JpaRepository для получения компонента по его ID
 
         if (component.isPresent()) {
@@ -47,41 +47,20 @@ public class ComponentServiceImpl implements ComponentService {
         return componentRepository.save(component);  // Используем метод JpaRepository для сохранения компонента
     }
 
-    @Override
-    public Component updateComponent(Integer id, Component componentDetails) {
-        Optional<Component> component = componentRepository.findById(id);
-
-        if (component.isPresent()) {
-            Component originalComp = component.get();
-
-            if (Objects.nonNull(componentDetails.getComponentName()) && !"".equalsIgnoreCase(originalComp.getComponentName())) {
-                originalComp.setComponentName(componentDetails.getComponentName());
-            }
-            if (Objects.nonNull(componentDetails.getManufacturer()) && !"".equalsIgnoreCase(originalComp.getManufacturer())) {
-                originalComp.setManufacturer(componentDetails.getManufacturer());
-            }
-            if (Objects.nonNull(componentDetails.getStatus()) && !"".equalsIgnoreCase(originalComp.getStatus())) {
-                originalComp.setStatus(componentDetails.getStatus());
-            }
-            if (Objects.nonNull(componentDetails.getFlightHours()) && componentDetails.getFlightHours()!=0) {
-                originalComp.setFlightHours(componentDetails.getFlightHours());
-            }
-
-            return componentRepository.save(originalComp);
-        }
-        return null;
-    }
 
     @Override
     public List<Component> findComponentByKeyWord(String keyword) {
         if(keyword!=null){
-            return componentRepository.searchByKeyword(keyword);
+            System.out.println("found");
+             return componentRepository.searchByKeyword(keyword);
+
         }
-        return (List<Component>) componentRepository.findAll();
+        System.out.println("Return main page");
+        return  componentRepository.findAll();
     }
 
     @Override
-    public void deleteComponent(Integer id) {
+    public void deleteComponent(Long id) {
         Component component = getComponentById(id);  // Используем наш метод для получения компонента по его ID
 
         componentRepository.delete(component);  // Используем метод JpaRepository для удаления компонента

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список компонентов</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+<header>
+    <h1>Список компонентов</h1>
+    <nav>
+        <a th:href="@{/all-aircrafts}">Самолеты</a>
+        <a th:href="@{/all-workers}">Работники</a>
+        <a th:href="@{/all-maintenance}">Обслуживание</a>
+        <a th:href="@{/all-suppliers}">Поставщики</a>
+    </nav>
+</header>
+<main>
+    <button id="showCompFormButton" class="btn btn-dark">New Component</button>
+    <form th:action="@{/search-component}">
+        <input type="hidden" id="currentPage" name="pageNo" th:value="${currentPage}">
+        <input type="text" id="searchField" name="keyword" th:value="${keyword}"  placeholder="Поиск">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button  type="submit">Search</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" onclick="ClearSearch()" value="Clear">
+
+    </form>
+    <table id="componentsTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Наименование</th>
+            <th>Производитель</th>
+            <th>Статус</th>
+            <th>Расходы</th>
+            <th>Обновлять</th>
+            <th>Удалить</th>
+            <th>детали</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Здесь будут отображаться данные о компонентах -->
+            <tr th:each="components: ${listOfComponents} ">
+                <td th:text="${components.componentId}"></td>
+                <td th:text="${components.componentName}"></td>
+                <td th:text="${components.manufacturer}"></td>
+                <td th:text="${components.status}"></td>
+                <td th:text="${components.cost}"></td>
+
+                <td><th:block th:with="componentId=${components.componentId}">
+                    <a class="show-comp-update btn btn-dark"
+                       data-toggle="modal"
+                       data-target="#updateComponentModal"
+                       th:data-component-id="${components.componentId}">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+
+
+                </th:block>
+<!--                <td><a th:href="@{/show-update-component-form/{id}(id=${components.componentId})}" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>-->
+                <td><a th:href="@{/delete-component/{id}(id=${components.componentId})}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                <td><th:block th:with="aircraftId=${components.componentId}">
+                    <a class="show-details btn btn-light"
+                       data-toggle="modal"
+                       data-target="#componentCardModal"
+                       th:data-details-id="${components.componentId}">
+                        <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
+                    </a>
+
+
+                </th:block>
+            </tr>
+        </tbody>
+    </table>
+    <div th:if="${totalPage>1}">
+        <div class="row col-sm-10">
+            <div class="row col-sm-2">
+                Total Rows: [[${totalItems}]]
+            </div>
+            <div class="row col-sm-1">
+                <span th:each="i: ${#numbers.sequence(1,totalPage)}">
+                    <a th:if="${currentPage !=i}" th:href="@{'/page/'+ ${i}}">[[${i}]]</a>
+                    <span th:unless="${currentPage !=i}">[[${i}]]</span> &nbsp;
+                </span>
+            </div>
+            <div class="row col-sm-1">
+
+                <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${currentPage+1}}">Следующий</a>
+                <span th:unless="${currentPage < totalPage}"> Следующий</span>
+
+            </div>
+            <div class="row col-sm-1">
+
+                <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${totalPage}}">Последний</a>
+                <span th:unless="${currentPage < totalPage}">Последний</span>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+<div id="modalCompContainer"></div>
+<div id="updateCompContainer"></div>
+<div id="compDetailsContainer"></div>
+<footer>
+    Подвал сайта
+</footer>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    // function to open new component modal
+    document.getElementById('showCompFormButton').addEventListener('click', function() {
+
+        loadModalContent();
+    });
+
+    function loadModalContent() {
+        var modalContainer = document.getElementById('modalCompContainer');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/show-new-component', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    modalContainer.innerHTML = xhr.responseText;
+                    $('#newComponentModal').modal('show'); // Show the modal
+                } else {
+                    alert("Failed to load modal")
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    // function to open update component modal
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.show-comp-update').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                var componentId = link.getAttribute('data-component-id');
+                console.log("Component ID:", componentId);
+                loadUpdateModalContent(componentId);
+            });
+        });
+    });
+
+    function loadUpdateModalContent(componentId) {
+        var modalContainer = document.getElementById('updateCompContainer');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/show-update-component-form/' + componentId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Opening component update form")
+                    modalContainer.innerHTML = xhr.responseText;
+                    $('#updateComponentModal').modal('show'); // Show the modal
+                } else {
+                    alert("Failed to load modal")
+                }
+            }
+        };
+        xhr.send();
+    }
+
+
+
+    // function to open  component details modal
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.show-details').forEach(function(link) {
+            console.log("Component Details Opening");
+            link.addEventListener('click', function(event) {
+                var componentId = link.getAttribute('data-details-id');
+                console.log("Component ID:", componentId);
+                loadDetailsModalContent(componentId);
+            });
+        });
+    });
+
+    function loadDetailsModalContent(componentId) {
+        var modalContainer = document.getElementById('compDetailsContainer');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/show-component-details/' + componentId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Opening component details modal")
+                    modalContainer.innerHTML = xhr.responseText;
+                    $('#componentDetailsCardModal').modal('show'); // Show the modal
+                } else {
+                    alert("Failed to load modal")
+                }
+            }
+        };
+        xhr.send();
+    }
+    // SEARCH
+    function ClearSearch() {
+        window.location= "/components"
+    }
+</script>
+
+</body>
+</html>

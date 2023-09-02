@@ -1,88 +1,133 @@
 package com.divibi.ams.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="component")
 public class Component {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "component_id")
-    private int componentId;
-    @Column(name = "component_name")
+    private Long componentId;
+
+    @Column(name = "ata_number")
+    private String ATANumber;
+
+    // Mapping to suppliers meaning  1 components to many suppliers
+    @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<Suppliers> suppliers = new ArrayList<Suppliers>();
+
+    // Mapping to aircraft meaning  many components to 1 aircraft
+    @ManyToOne
+    @JoinColumn(name = "aircraft_id")
+    private Aircraft aircraft;
+
+    @Column(name = "name")
     private String componentName;
+
+    @Column(name = "manufacturer")
     private String manufacturer;
-    @Column(name = "flight_hours")
-    private int flightHours;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "installation_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date installationDate;
+
+    @Column(name = "warranty_expiration_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date warrantyExpirationDate;
+
+    @Column(name = "unscheduled_removal")
+    private Long unscheduledRemoval;
+
+    @Column(name = "MTBF")
+    private double MTBF;
+
+    @Column(name = "MTBUR")
+    private double MTBUR;
+
+    @Column(name = "MTTF")
+    private double MTTF;
+
+    @Column(name = "LIFESPAN")
+    private double lifeSpan;
+
+    @Column(name = "conditions")
+    private String conditions;
+
+    @Column(name = "critical_component")
+    private boolean critical_component;
+
+    @Column(name = "maintenance_cycle")
+    private double maintenanceCycle;
+
+    @Column(name = "last_maintenance_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date lastMaintenanceDate;
+
+    @Column(name = "next_maintenance_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date nextMaintenanceDate;
+
+    @Column(name = "repair_history")
+    private String repairHistory;
+
+    @Column(name = "overhaul_history")
+    private String overhaulHistory;
+
+    @Column(name = "cost")
+    private double cost;
+
+    @Column(name = "warranty_terms")
+    private String warrantyTerms;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "compliance_certificates")
+    private String complianceCertificates;
+
+    @Column(name = "work_order_list")
+    private String workOrderList;
+
+    @Column(name = "damage_numbers")
+    private String damageNumbers;
+
+    @Column(name = "operating_hours_first_failure")
+    private double operatingHoursFirstFailure;
+
+    @Column(name = "operating_hours_second_failure")
+    private double operatingHoursSecondFailure;
+
+    @Column(name = "operating_hours_third_failure")
+    private double operatingHoursThirdFailure;
+
+    @Column(name = "failure_replacement_frequency")
+    private String failureReplacementFrequency;
+
+    @Column(name = "scheduled_maintenance_replacement_frequency")
+    private String scheduledMmaintenanceReplacementFrequency;
+
+    @Column(name = "number_removals")
+    private String numberRemovals;
 
     @Column(name = "status")
     private String status;
 
-    public Component(int componentId, String componentName, String manufacturer, int flightHours, String status) {
-        this.componentId = componentId;
-        this.componentName = componentName;
-        this.manufacturer = manufacturer;
-        this.flightHours = flightHours;
-        this.status = status;
-    }
 
-    public Component() {
 
-    }
-
-    // Add getters and setters for the attributes
-    public int getComponentId() {
-        return componentId;
-    }
-
-    public void setComponentId(int componentId) {
-        this.componentId = componentId;
-    }
-
-    public String getComponentName() {
-        return componentName;
-    }
-
-    public void setComponentName(String componentName) {
-        this.componentName = componentName;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public int getFlightHours() {
-        return flightHours;
-    }
-
-    public void setFlightHours(int flightHours) {
-        this.flightHours = flightHours;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    // Add any other methods for the Component class as needed
-//    private int maintenanceRecordCount; // Поле для хранения количества записей об обслуживании
-
-    // Метод для получения количества записей об обслуживании
-//    public int getMaintenanceRecordCount() {
-//        return maintenanceRecordCount;
-//    }
-
-    // Метод для установки количества записей об обслуживании
-//    public void setMaintenanceRecordCount(int maintenanceRecordCount) {
-//        this.maintenanceRecordCount = maintenanceRecordCount;
-//    }
 }

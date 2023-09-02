@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bootstrap Card with Tabs</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        /* Custom styles for evenly spaced tabs */
+        .custom-tabs {
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        .custom-tabs .nav-link {
+            flex-grow: 1;
+            text-align: center;
+        }
+    </style>
+    <!-- Include Bootstrap CSS and JS links here -->
+</head>
+<body>
+
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs custom-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Tab 1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                    <!-- Content of Tab 1 -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputTab1">Input 1:</label>
+                                <input type="text" class="form-control" id="inputTab1" placeholder="Enter text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputTab2">Input 2:</label>
+                                <input type="text" class="form-control" id="inputTab2" placeholder="Enter text">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat the structure for inputs 3-7 -->
+                </div>
+                <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                    <!-- Content of Tab 2 -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputTab3">Input 3:</label>
+                                <input type="text" class="form-control" id="inputTab3" placeholder="Enter text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="inputTab4">Input 4:</label>
+                                <input type="text" class="form-control" id="inputTab4" placeholder="Enter text">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat the structure for inputs 5-7 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS link here -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

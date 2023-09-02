@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список работников</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+<header>
+  <h1>Список работников</h1>
+  <nav>
+    <a th:href="@{/all-aircrafts}">Самолеты</a>
+    <a th:href="@{/templates/components}">Компоненты</a>
+    <a th:href="@{/all-maintenance}">Обслуживание</a>
+    <a th:href="@{/all-suppliers}">Поставщики</a>
+  </nav>
+</header>
+<main>
+  <button id="showFormButton" class="btn btn-dark">New Worker</button>
+<!--  <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;Новый работник</a>-->
+  <form th:action="@{/search-worker}">
+    <input type="hidden" id="currentPage" name="pageNo" th:value="${currentPage}">
+    <input type="text" id="searchField" name="keyword" th:value="${keyword}"  placeholder="Поиск">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button  type="submit">Search</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="button" onclick="ClearSearch()" value="Clear">
+
+  </form>
+  <table id="workerTable">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Имя</th>
+      <th>Контактная информация</th>
+      <th>Позиция</th>
+      <th>Обновлять</th>
+      <th>Удалить</th>
+      <th>детали</th>
+      <!-- Добавьте другие столбцы по мере необходимости -->
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Здесь будут отображаться данные о работниках -->
+      <tr th:each="worker: ${listOfWorker} ">
+        <td th:text="*{worker.workerId}"></td>
+        <td th:text="${worker.name}"></td>
+        <td th:text="${worker.contactInfo}"></td>
+        <td th:text="${worker.position}"></td>
+        <td><th:block th:with="aircraftId=${worker.workerId}">
+          <a class="show-update btn btn-dark"
+             data-toggle="modal"
+             data-target="#updateWorkerModal"
+             th:data-worker-id="${worker.workerId}">
+
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </a>
+        </th:block>
+
+        </td>
+
+<!--        //<td><a th:href="@{/show-update-worker-form/{id}(id=${worker.workerId})}" class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>-->
+        <td><a th:href="@{/delete-worker/{id}(id=${worker.workerId})}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+        <td><th:block th:with="aircraftId=${worker.workerId}">
+          <a class="show-details btn btn-light"
+             data-toggle="modal"
+             data-target="#workerDetailsCardModal"
+             th:data-details-id="${worker.workerId}">
+            <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
+          </a>
+        </th:block>
+      </tr>
+    </tbody>
+  </table>
+  <div th:if="${totalPage>1}">
+    <div class="row col-sm-10">
+      <div class="row col-sm-2">
+        Total Rows: [[${totalItems}]]
+      </div>
+      <div class="row col-sm-1">
+                        <span th:each="i: ${#numbers.sequence(1,totalPage)}">
+                            <a th:if="${currentPage !=i}" th:href="@{'/page/'+ ${i}}">[[${i}]]</a>
+                            <span th:unless="${currentPage !=i}">[[${i}]]</span> &nbsp;
+                        </span>
+      </div>
+      <div class="row col-sm-1">
+
+        <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${currentPage+1}}">Следующий</a>
+        <span th:unless="${currentPage < totalPage}"> Следующий</span>
+
+      </div>
+      <div class="row col-sm-1">
+
+        <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${totalPage}}">Последний</a>
+        <span th:unless="${currentPage < totalPage}">Последний</span>
+
+      </div>
+    </div>
+  </div>
+</main>
+<div id="modalContainer"></div>
+<div id="updateContainer"></div>
+<div id="detailsContainer"></div>
+<footer>
+  Подвал сайта
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script>
+  document.getElementById('showFormButton').addEventListener('click', function() {
+    console.log("Hello");
+    loadModalContent();
+  });
+
+  function loadModalContent() {
+    var modalContainer = document.getElementById('modalContainer');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/show-new-worker', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          modalContainer.innerHTML = xhr.responseText;
+          $('#worker').modal('show'); // Show the modal
+        } else {
+          alert("Failed to load modal")
+        }
+      }
+    };
+    xhr.send();
+  }
+  // function to open update worker modal
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.show-update').forEach(function(link) {
+      link.addEventListener('click', function(event) {
+        var workerId = link.getAttribute('data-worker-id');
+        console.log("Worker ID:", workerId);
+        loadUpdateModalContent(workerId);
+      });
+    });
+  });
+
+  function loadUpdateModalContent(workerId) {
+    var modalContainer = document.getElementById('updateContainer');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/show-update-worker-form/' + workerId, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          console.log("Opening Worker update form")
+          modalContainer.innerHTML = xhr.responseText;
+          $('#updateWorkerModal').modal('show'); // Show the modal
+        } else {
+          alert("Failed to load worker update form")
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  // function to open  worker details modal
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.show-details').forEach(function(link) {
+      // console.log("HI");
+      link.addEventListener('click', function(event) {
+        var workerId = link.getAttribute('data-details-id');
+        console.log("Worker ID:", workerId);
+        loadDetailsModalContent(workerId);
+      });
+    });
+  });
+
+  function loadDetailsModalContent(workerId) {
+    var modalContainer = document.getElementById('detailsContainer');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/show-worker-details/' + workerId, true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          console.log("Opening details modal")
+          modalContainer.innerHTML = xhr.responseText;
+          $('#workerDetailsCardModal').modal('show'); // Show the modal
+        } else {
+          alert("Failed to load modal")
+        }
+      }
+    };
+    xhr.send();
+  }
+
+  // document.getElementById("searchButton").addEventListener("click", function() {
+  //   var keyword = document.getElementById("searchField").value;
+  //   performSearch(keyword);
+  // });
+  //
+  // function performSearch(keyword) {
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.open('GET', '/search-worker?keyword=' + keyword, true);
+  //   xhr.onreadystatechange = function() {
+  //     if (xhr.readyState === XMLHttpRequest.DONE) {
+  //       if (xhr.status === 200) {
+  //         document.querySelector("#workerTable tbody").innerHTML = xhr.responseText;
+  //       } else {
+  //         alert("Failed to perform search");
+  //       }
+  //     }
+  //   };
+  //   xhr.send();
+  // }
+
+  function ClearSearch() {
+    window.location= "/all-workers"
+  }
+</script>
+
+</body>
+</html>

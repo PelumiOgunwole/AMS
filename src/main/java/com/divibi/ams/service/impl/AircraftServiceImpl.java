@@ -10,6 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,50 +39,33 @@ public class AircraftServiceImpl implements AircraftService {
     }
 
     @Override
-    public Aircraft getAircraftById(Integer id) {
+    public Aircraft getAircraftById(Long id) {
         Aircraft aircraft = aircraftRepository.findById(id).orElse(null);
         return aircraft;
     }
 
     @Override
+//    @Transactional
     public Aircraft saveAircraft(Aircraft aircraft) {
         return aircraftRepository.save(aircraft);
     }
 
+
+
     @Override
-    public Aircraft updateAircraft(Integer id, Aircraft aircraft) {
-        // Реализация будет зависеть от ваших требований к обновлению
-        Optional<Aircraft> aircraft1 = aircraftRepository.findById(id);
-
-        if (aircraft1.isPresent()) {
-            Aircraft originalAircrat = aircraft1.get();
-
-            if (Objects.nonNull(aircraft.getAircraftCode()) && !"".equalsIgnoreCase(originalAircrat.getAircraftCode())) {
-                originalAircrat.setAircraftCode(aircraft.getAircraftCode());
-            }
-            if (Objects.nonNull(aircraft.getAircraftModel()) && !"".equalsIgnoreCase(originalAircrat.getAircraftModel())) {
-                originalAircrat.setAircraftModel(aircraft.getAircraftModel());
-            }
-            if (Objects.nonNull(aircraft.getTotalFlightHours()) && aircraft.getTotalFlightHours()!=0) {
-                originalAircrat.setAircraftModel(aircraft.getAircraftModel());
-            }
-
-            return aircraftRepository.save(originalAircrat);
+    public List<Aircraft> findAirCraftByKeyWord(String keyWord) {
+        if (keyWord != null ) {
+            // Perform the search using the provided keyword and data types
+            return aircraftRepository.searchByKeyword(keyWord);
+        } else {
+            // If no keyword provided, perform a search without any filters
+            return aircraftRepository.findAll();
         }
-        return null;
 
     }
 
     @Override
-    public List<Aircraft> findAirCraftByKeyWord(String keyword) {
-        if(keyword!=null){
-            return aircraftRepository.searchByKeyword(keyword);
-        }
-        return (List<Aircraft>) aircraftRepository.findAll();
-    }
-
-    @Override
-    public void deleteAircraft(Integer id) {
+    public void deleteAircraft(Long id) {
         aircraftRepository.deleteById(id);
     }
 
