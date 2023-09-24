@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список самолетов</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
@@ -62,7 +62,7 @@
                 <td th:text="${aircrafts.totalFlightHours}"></td>
                 <td><th:block th:with="aircraftId=${aircrafts.aircraftId}">
                     <a class="show-update btn btn-dark"
-                       data-toggle="modal"
+                       data-toggle=""
                        data-target="#updateAircraftModal"
                        th:data-aircraft-id="${aircrafts.aircraftId}">
 
@@ -76,7 +76,7 @@
                 <td><a th:href="@{/delete-aircraft/{id}(id=${aircrafts.aircraftId})}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 <td><th:block th:with="aircraftId=${aircrafts.aircraftId}">
                     <a class="show-details btn btn-light"
-                       data-toggle="modal"
+                       data-toggle=""
                        data-target="#aircraftCardModal"
                        th:data-details-id="${aircrafts.aircraftId}">
                         <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
@@ -122,9 +122,14 @@
     Подвал сайта
 </footer>
 <script>
+
+    // Function to close existing modal
+    function closeModal() {
+        $('#newAircraftModal').modal('hide'); // Hide the modal
+    }
     // function to open new aircraft modal
     document.getElementById('showFormButton').addEventListener('click', function() {
-        console.log("Hello");
+        closeModal();
         loadModalContent();
     });
 

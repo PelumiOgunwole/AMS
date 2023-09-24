@@ -41,7 +41,7 @@ public class ComponentController {
     @GetMapping("/show-component-details/{id}")
     public String showComponentDetails(@PathVariable (value = "id") Long id, Model model) {
         Component component = componentService.getComponentById(id);
-        System.out.println(component.getComponentId());
+//        System.out.println(component.getComponentId());
 //        System.out.println(aircraft.getTailNumber());
         model.addAttribute("details",component);
         return "components/component_details";
