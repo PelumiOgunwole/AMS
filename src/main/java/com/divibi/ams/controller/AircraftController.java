@@ -37,8 +37,8 @@ public class AircraftController {
     @GetMapping("/show-aircraft-details/{id}")
     public String showAircraftDetails(@PathVariable (value = "id") Long id, Model model) {
         Aircraft aircraft = aircraftService.getAircraftById(id);
-        System.out.println(aircraft.getAircraftId());
-        System.out.println(aircraft.getTailNumber());
+//        System.out.println(aircraft.getAircraftId());
+//        System.out.println(aircraft.getTailNumber());
         model.addAttribute("details",aircraft);
         return "aircraft/aircraft_details";
     }
@@ -48,8 +48,6 @@ public class AircraftController {
         if(bindingResult.hasErrors()){
             return "aircraft/update_aircraft";
         }
-        System.out.println(aircraft.getAircraftId());
-        System.out.println(aircraft.getTailNumber());
         aircraftService.saveAircraft(aircraft);
         return "redirect:/all-aircrafts";
     }
@@ -83,10 +81,10 @@ public class AircraftController {
         return "redirect:/all-aircrafts";
     }
 
-    @GetMapping("/page/{pageNo}")
+    @GetMapping("/all-aircrafts/page/{pageNo}")
     public String getPaginated(@PathVariable(value = "pageNo") Integer pageNo, Model model,
                                @RequestParam(value = "keyWord", required = false) String keyWord,HttpSession session) {
-        int pageSize = 10;
+        int pageSize = 2;
         Page<Aircraft> page = aircraftService.findPaginated(pageNo, pageSize);
 
         List<Aircraft> listOfAirCraft = page.getContent();

@@ -23,9 +23,7 @@ public class Worker {
     @Column(name = "contact_info")
     private String contactInfo;
     // Add other attributes for the worker as needed
-    @ManyToOne
-    @JoinColumn(name = "aircraft_id")
-    private Aircraft  aircraft;
+
 
 }
 

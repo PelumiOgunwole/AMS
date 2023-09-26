@@ -26,7 +26,7 @@ public class WorkerController {
     }
 
     @RequestMapping(value = "/all-workers",method = RequestMethod.GET  )
-    public String viewAircraftHomePage (Model model, HttpSession session) {
+    public String viewWorkerHomePage (Model model, HttpSession session) {
         session.setAttribute("freshLoad", true);
         return getPaginated(1,model,null,session);
     }
@@ -82,16 +82,17 @@ public class WorkerController {
         return "redirect:/all-workers";
     }
 
-    @GetMapping("/pages/{pageNo}")
-    public String getPaginated(@PathVariable (value = "pageNo") Integer pageNo,Model model,
+    @GetMapping("/all-workers/pages/{pageNom}")
+    public String getPaginated(@PathVariable (value = "pageNom") Integer pageNo,Model model,
                                @RequestParam(value = "keyword", required = false) String keyword,HttpSession session) {
-        int pageSize =10;
+        int pageSize =5;
         Page<Worker> page =workerService.findPaginated(pageNo,pageSize);
         List<Worker> listOfWorkers = page.getContent();
         model.addAttribute("currentPage",pageNo);
         model.addAttribute("totalPage",page.getTotalPages());
         model.addAttribute("totalContent",page.getTotalElements());
         model.addAttribute("listOfWorker",listOfWorkers);
+//        model.addAttribute("totalItems", totalItems);
         model.addAttribute("keyword", keyword); // Retain the search keyword
         session.setAttribute("freshLoad", false); // Set to false after initial load
 

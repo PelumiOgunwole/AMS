@@ -66,11 +66,12 @@ public class Aircraft {
     @Min(value = 0, message = "Value must be greater than or equal to 0")
     private Long deferredMaintenanceTasks;
 
-    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "aircraft", fetch = FetchType.LAZY, cascade= CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "aircraft-worker-id")
     private Set<Worker> workers = new HashSet<Worker>() ;
 
     @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<Component>  components = new ArrayList<Component>();
+    @JoinColumn(name = "aircraft-component-id")
+    private Set<Component>  components = new HashSet<>();
 
 }

@@ -24,7 +24,7 @@ public class WorkOrder {
 
     @Column(name = "AC")
     @NotNull
-    @Min(value = 1, message = "Value must be greater than or equal to 1")
+//    @Min(value = 1, message = "Value must be greater than or equal to 1")
     private String AC;
 
     @Column(name = "issue_date")

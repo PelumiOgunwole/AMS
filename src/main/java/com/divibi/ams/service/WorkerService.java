@@ -14,7 +14,6 @@ public interface WorkerService {
 
     Worker saveWorker(Worker worker);
 
-    Worker updateWorker(Long id, Worker worker);
 
     void deleteWorker(Long id);
     List<Worker> findWorkerByKeyWord(String keyword);

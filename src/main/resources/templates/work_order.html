@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Order</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<header>
+    <h1>Work Order</h1>
+    <nav>
+        <a th:href="@{/all-maintenance}">обслуживание</a>
+        <a th:href="@{/all-workers}">Работники</a>
+        <a th:href="@{/components}">Компоненты</a>
+        <a th:href="@{/all-suppliers}">Поставщики</a>
+        <a th:href="@{/all-aircrafts}">Самолеты</a>
+    </nav>
+</header>
+<main>
+
+    <button id="showFormButton" class="btn btn-dark">New Work Order</button>
+    <form th:action="@{/search-aircraft}">
+        <input type="hidden" id="currentPage" name="pageNo" th:value="${currentPage}">
+        <input type="text" id="searchField" name="keyWord" th:value="${keyWord}"  placeholder="Поиск">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button  type="submit">Search</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" onclick="ClearSearch()" value="Clear">
+
+    </form>
+
+
+
+    <!--    <button id="searchButton" class="btn btn-primary">Поиск</button>-->
+
+    <table id="workOrderTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>A/C</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>flags</th>
+            <th>Удалить</th>
+            <th>детали</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Здесь будут отображаться данные о самолетах -->
+        <tr th:each="workOrder: ${listOfWorkOrder} ">
+            <td th:text="${workOrder.workOrderId}"></td>
+            <td th:text="${workOrder.AC}"></td>
+            <td th:text="${workOrder.IssueDate}"></td>
+            <td th:text="${workOrder.dueDate}"></td>
+            <td><th:block th:with="workOrderId=${workOrder.workOrderId}">
+                <a class="show-update btn btn-dark"
+                   data-toggle=""
+                   data-target="#updateWorkOrderModal"
+                   th:data-workOrder-id="${workOrder.workOrderId}">
+
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+            </th:block>
+
+            </td>
+
+            <!--                <td><a id="show-update" data-aircraft-id="${aircraftId}"  class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>-->
+            <td><a th:href="@{/delete-aircraft/{id}(id=${workOrder.workOrderId})}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+            <td><th:block th:with="workOrderId=${workOrder.workOrderId}">
+                <a class="show-details btn btn-light"
+                   data-toggle=""
+                   data-target="#workOrderDetailsCardModal"
+                   th:data-details-id="${workOrder.workOrderId}">
+                    <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
+                </a>
+            </th:block>
+        </tr>
+
+        </tbody>
+    </table>
+    <div th:if="${totalPage>1}">
+        <div class="row col-sm-10">
+            <div class="row col-sm-2">
+                Total Rows: [[${totalItems}]]
+            </div>
+            <div class="row col-sm-1">
+                        <span th:each="i: ${#numbers.sequence(1,totalPage)}">
+                            <a th:if="${currentPage !=i}" th:href="@{'/page/'+ ${i}}">[[${i}]]</a>
+                            <span th:unless="${currentPage !=i}">[[${i}]]</span> &nbsp;
+                        </span>
+            </div>
+            <div class="row col-sm-1">
+
+                <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${currentPage+1}}">Следующий</a>
+                <span th:unless="${currentPage < totalPage}"> Следующий</span>
+
+            </div>
+            <div class="row col-sm-1">
+
+                <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${totalPage}}">Последний</a>
+                <span th:unless="${currentPage < totalPage}">Последний</span>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+<div id="modalContainer"></div>
+<div id="updateContainer"></div>
+<div id="detailsContainer"></div>
+
+<!--<div th:include="fragments/new_aircraft :: modal"></div>-->
+<footer>
+    Подвал сайта
+</footer>
+<script>
+
+    // Function to close existing modal
+    function closeModal() {
+        $('#newWorkOrderModal').modal('hide'); // Hide the modal
+    }
+    // function to open new aircraft modal
+    document.getElementById('showFormButton').addEventListener('click', function() {
+        closeModal();
+        loadModalContent();
+    });
+
+    function loadModalContent() {
+        var modalContainer = document.getElementById('modalContainer');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/show-new-work_order', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    modalContainer.innerHTML = xhr.responseText;
+                    $('#newWorkOrderModal').modal('show'); // Show the modal
+                } else {
+                    alert("Failed to load modal")
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    // function to open update aircraft modal
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.show-update').forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    var workOrderId = link.getAttribute('data-workOrder-id');
+
+                    console.log("Work Order ID:", workOrderId);
+                    loadUpdateModalContent(workOrderId);
+                });
+            });
+        });
+
+            function loadUpdateModalContent(workOrderId) {
+            var modalContainer = document.getElementById('updateContainer');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/show-update-workorder-form/' + workOrderId, true);
+            xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log("Opening update form")
+            modalContainer.innerHTML = xhr.responseText;
+            $('#updateWorkOrderModal').modal('show'); // Show the modal
+        } else {
+            alert("Failed to load Work Order Update Fields")
+        }
+        }
+        };
+            xhr.send();
+        }
+
+    // function to open  aircraft details modal
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.show-details').forEach(function(link) {
+<!--            console.log("HI");-->
+            link.addEventListener('click', function(event) {
+                var workOrderId = link.getAttribute('data-details-id');
+                console.log("WorkOrder ID:", workOrderId);
+                loadDetailsModalContent(workOrderId);
+            });
+        });
+    });
+
+    function loadDetailsModalContent(workOrderId) {
+        var modalContainer = document.getElementById('detailsContainer');
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/show-work-order-details/' + workOrderId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Opening details modal")
+                    modalContainer.innerHTML = xhr.responseText;
+                    $('#workOrderDetailsCardModal').modal('show'); // Show the modal
+                } else {
+                    alert("Failed to load Work Order Details")
+                }
+            }
+        };
+        xhr.send();
+    }
+    // SEARCH
+    function ClearSearch() {
+        window.location= "/all-workOrder"
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

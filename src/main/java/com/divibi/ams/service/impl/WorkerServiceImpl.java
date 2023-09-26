@@ -45,16 +45,6 @@ public class WorkerServiceImpl implements WorkerService {
         return workerRepository.save(worker);  // Используем метод JpaRepository для сохранения работника
     }
 
-    @Override
-    public Worker updateWorker(Long id, Worker workerDetails) {
-        Worker worker = getWorkerById(id);  // Используем наш метод для получения работника по его ID
-
-        worker.setName(workerDetails.getName());
-        worker.setPosition(workerDetails.getPosition());
-        worker.setContactInfo(workerDetails.getContactInfo());
-
-        return workerRepository.save(worker);  // Используем метод JpaRepository для сохранения обновленного работника
-    }
 
     @Override
     public void deleteWorker(Long id) {

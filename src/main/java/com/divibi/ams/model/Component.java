@@ -30,9 +30,9 @@ public class Component {
     private List<Suppliers> suppliers = new ArrayList<Suppliers>();
 
     // Mapping to aircraft meaning  many components to 1 aircraft
-    @ManyToOne
-    @JoinColumn(name = "aircraft_id")
-    private Aircraft aircraft;
+//    @ManyToOne
+//    @JoinColumn(name = "aircraft_id")
+//    private Aircraft aircraft;
 
     @Column(name = "name")
     private String componentName;
