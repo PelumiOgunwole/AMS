@@ -2,7 +2,9 @@ package com.divibi.ams.controller;
 
 import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.Component;
+import com.divibi.ams.model.Suppliers;
 import com.divibi.ams.repository.ComponentRepository;
+import com.divibi.ams.repository.SupplierRepository;
 import com.divibi.ams.service.ComponentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,11 +21,13 @@ public class ComponentController {
 
     private final ComponentService componentService;
     private final ComponentRepository componentRepository;
+    private  final SupplierRepository supplierRepository;
 
     public ComponentController(ComponentService componentService,
-                               ComponentRepository componentRepository) {
+                               ComponentRepository componentRepository,SupplierRepository supplierRepository) {
         this.componentService = componentService;
         this.componentRepository = componentRepository;
+        this.supplierRepository=supplierRepository;
     }
 
     @RequestMapping(value = "/components",method = RequestMethod.GET  )
@@ -35,15 +39,18 @@ public class ComponentController {
     @GetMapping("/show-new-component")
     public String showNewComponent(Model model) {
         Component component = new Component();
+        List<Suppliers> suppliers = supplierRepository.findAll();
+
         model.addAttribute("component",component);
+        model.addAttribute("listOfSuppliers",suppliers);
         return "components/new_component";
     }
     @GetMapping("/show-component-details/{id}")
     public String showComponentDetails(@PathVariable (value = "id") Long id, Model model) {
         Component component = componentService.getComponentById(id);
-//        System.out.println(component.getComponentId());
-//        System.out.println(aircraft.getTailNumber());
+        List<Suppliers> suppliers = supplierRepository.findAll();
         model.addAttribute("details",component);
+        model.addAttribute("listOfSuppliers",suppliers);
         return "components/component_details";
     }
     @GetMapping("/search-component")
@@ -82,7 +89,7 @@ public class ComponentController {
         return "redirect:/components";
     }
 
-    @GetMapping("/page/{pageNumber}")
+    @GetMapping("/components/page/{pageNumber}")
     public String getComponentPaginated(@PathVariable (value = "pageNumber") Integer pageNumber,
         Model model,@RequestParam(value = "keyword", required = false) String keyword,HttpSession session) {
         int pageSize =10;

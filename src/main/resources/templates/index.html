@@ -27,7 +27,7 @@
         </header>
         <main>
         <!--    <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;New Aircraft</a>-->
-            <button id="showFormButton" class="btn btn-dark">New Aircraft</button>
+            <button id="showFormButton" class="btn btn-dark" data-toggle="">New Aircraft</button>
             <form th:action="@{/search-aircraft}">
                 <input type="hidden" id="currentPage" name="pageNo" th:value="${currentPage}">
                     <input type="text" id="searchField" name="keyWord" th:value="${keyWord}"  placeholder="Поиск">

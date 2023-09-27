@@ -13,7 +13,7 @@ import java.util.List;
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
     // В этом интерфейсе нет необходимости определять методы.
     @Query("SELECT DISTINCT i FROM Worker i " +
-            "LEFT JOIN FETCH i.aircraft c " +
+
             "WHERE " +
             "CONCAT(i.workerId, i.Name, i.contactInfo, i.contactInfo, i.position) " +
             "LIKE %:keyword%")

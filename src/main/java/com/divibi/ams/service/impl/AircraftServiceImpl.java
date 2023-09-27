@@ -3,6 +3,8 @@ package com.divibi.ams.service.impl;
 import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.Worker;
 import com.divibi.ams.repository.AircraftRepository;
+import com.divibi.ams.repository.WorkOrderRepository;
+import com.divibi.ams.repository.WorkerRepository;
 import com.divibi.ams.service.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,10 +29,12 @@ public class AircraftServiceImpl implements AircraftService {
     // Инъекция зависимостей для репозитория
 
     private AircraftRepository aircraftRepository;
+    private WorkerRepository workerRepository;
 
     //@Autowired  // аннотация, указывающая, что это место для автоматической вставки зависимости
-    public AircraftServiceImpl(AircraftRepository aircraftRepository) {
+    public AircraftServiceImpl(AircraftRepository aircraftRepository,WorkerRepository workerRepository) {
         this.aircraftRepository = aircraftRepository;
+        this.workerRepository=workerRepository;
     }
 
     @Override

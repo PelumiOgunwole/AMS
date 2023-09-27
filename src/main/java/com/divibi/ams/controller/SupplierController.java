@@ -83,10 +83,10 @@ public class SupplierController {
             return "redirect:/all-suppliers";
         }
 
-        @GetMapping("/pages/{pageNos}")
+        @GetMapping("/all-suppliers/pages/{pageNos}")
         public String getPaginated(@PathVariable (value = "pageNos") Integer pageNos,Model model,
                                    @RequestParam(value = "keyword", required = false) String keyword,HttpSession session) {
-            int pageSize =10;
+            int pageSize =5;
             Page<Suppliers> page =supplierService.findPaginated(pageNos,pageSize);
             List<Suppliers> listOfSupplier = page.getContent();
             model.addAttribute("currentPage",pageNos);

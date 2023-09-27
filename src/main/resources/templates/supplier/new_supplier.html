@@ -51,7 +51,7 @@
                     </li>
 
                 </ul>
-                <form id="dynamicForm" action="#" method="post" th:action="@{/save-supplier}" th:object="${supplier}">
+                <form id="dynamicForm" action="#" method="post" th:action="@{/save-supplier-details}" th:object="${supplier}">
                     <input type="hidden" th:field="*{supplier_id}">
                     <div class="tab-content" id="aircraftTabsContent">
                         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
@@ -59,7 +59,7 @@
                             <div class="row row-divider mt4">
                                 <div class="form-group col-md-6">
                                     <label for="Name" class="mt4">Name</label>
-                                    <input  type="text" class="form-control" id="Name" th:field="*{name}" placeholder="Name">
+                                    <input  type="text" class="form-control" id="Name" th:field="*{Name}" placeholder="Name">
                                     <!--                  <span th:if="${#fields.hasErrors('tailNumber')}" th:errors="*{tailNumber}"></span>-->
 
                                 </div>

@@ -42,16 +42,7 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(supplier);  // Используем метод JpaRepository для сохранения работника
     }
 
-    @Override
-    public Suppliers updateSupplier(Long id, Suppliers supplierDetails) {
-        Suppliers supplier = getSupplierById(id);  // Используем наш метод для получения работника по его ID
 
-        supplier.setName(supplierDetails.getName());
-        supplier.setContactInfo(supplierDetails.getContactInfo());
-        supplier.setComponent(supplierDetails.getComponent());
-
-        return supplierRepository.save(supplier);  // Используем метод JpaRepository для сохранения обновленного работника
-    }
 
     @Override
     public void deleteSupplier(Long id) {

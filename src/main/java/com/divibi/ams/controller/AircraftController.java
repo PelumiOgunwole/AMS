@@ -1,6 +1,10 @@
 package com.divibi.ams.controller;
 
 import com.divibi.ams.model.Aircraft;
+import com.divibi.ams.model.Component;
+import com.divibi.ams.model.Worker;
+import com.divibi.ams.repository.ComponentRepository;
+import com.divibi.ams.repository.WorkerRepository;
 import com.divibi.ams.service.AircraftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +25,15 @@ import java.util.List;
 @RequestMapping("/")
 public class AircraftController {
     @Autowired
-    private  AircraftService aircraftService;
+    private final AircraftService aircraftService;
+    private  final WorkerRepository workerRepository;
+    private  final ComponentRepository componentRepository;
+
+    public AircraftController(AircraftService aircraftService, WorkerRepository workerRepository,ComponentRepository componentRepository) {
+        this.aircraftService = aircraftService;
+        this.workerRepository = workerRepository;
+        this.componentRepository =componentRepository;
+    }
 
     @RequestMapping(value = "/all-aircrafts",method = RequestMethod.GET  )
     public String viewAircraftHomePage (Model model, HttpSession session) {
@@ -30,15 +43,21 @@ public class AircraftController {
 
     @GetMapping("/show-new-aircraft")
     public String showNewAircraft(Model model) {
+        List<Worker> workers = workerRepository.findAll();
+        List<Component> components = componentRepository.findAll();
         Aircraft aircraft = new Aircraft();
         model.addAttribute("aircraft",aircraft);
+        model.addAttribute("listOfWorkers",workers);
+        model.addAttribute("listOfComponents",components);
         return "aircraft/new_aircraft";
     }
     @GetMapping("/show-aircraft-details/{id}")
     public String showAircraftDetails(@PathVariable (value = "id") Long id, Model model) {
         Aircraft aircraft = aircraftService.getAircraftById(id);
-//        System.out.println(aircraft.getAircraftId());
-//        System.out.println(aircraft.getTailNumber());
+        List<Worker> workers = workerRepository.findAll();
+        List<Component> components = componentRepository.findAll();
+        model.addAttribute("listOfWorkers",workers);
+        model.addAttribute("listOfComponents",components);
         model.addAttribute("details",aircraft);
         return "aircraft/aircraft_details";
     }
@@ -48,6 +67,7 @@ public class AircraftController {
         if(bindingResult.hasErrors()){
             return "aircraft/update_aircraft";
         }
+
         aircraftService.saveAircraft(aircraft);
         return "redirect:/all-aircrafts";
     }

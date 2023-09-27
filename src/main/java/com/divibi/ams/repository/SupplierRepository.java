@@ -12,7 +12,7 @@ import java.util.List;
 public interface SupplierRepository extends JpaRepository<Suppliers, Long> {
 
     @Query("SELECT DISTINCT i FROM Suppliers i " +
-            "LEFT JOIN FETCH i.component c " +
+
             "WHERE " +
             "CONCAT(i.supplier_id, i.Name, i.contactInfo) " +
             "LIKE %:keyword%")

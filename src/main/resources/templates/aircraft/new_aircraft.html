@@ -3,36 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 <head>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            console.log("DOMContentLoaded event fired."); // Debugging line
 
-            // Counter to track the number of worker fields
-            var workerFieldCount = 1;
-
-            // Add worker input fields
-            document.getElementById("addWorker").addEventListener("click", function () {
-                console.log("Add Worker button clicked."); // Debugging line
-
-                // Clone the worker field container
-                var workerField = document.querySelector(".worker-field").cloneNode(true);
-
-                // Increment the input field names and IDs to avoid conflicts
-                var workerNameInput = workerField.querySelector("[name='workerNames']");
-                workerNameInput.name = "workerNames_" + workerFieldCount;
-                workerNameInput.id = "workerNames_" + workerFieldCount;
-
-                var workerPositionInput = workerField.querySelector("[name='workerPositions']");
-                workerPositionInput.name = "workerPositions_" + workerFieldCount;
-                workerPositionInput.id = "workerPositions_" + workerFieldCount;
-
-                workerFieldCount++;
-
-                // Append the cloned worker field container
-                document.querySelector(".worker-fields").appendChild(workerField);
-            });
-        });
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавить новый самолет</title>
@@ -165,23 +136,34 @@
 <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
 
                                 </div>
+                                <div th:if="${not #lists.isEmpty(listOfWorkers)}" class="form-group col-md-6">
+                                    <label ><h6>Workers(* You can multiselect by holding control button *)</h6></label>
+                                    <select th:field="*{workers}" required multiple="multiple">
+                                        <th:block th:each="worker : ${listOfWorkers}">
+                                            <option th:text="${worker.Name}" th:value="${worker.workerId}"></option>
+                                        </th:block>
+                                    </select>
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                                </div>
                                 <!-- Add more fields if needed -->
                             </div>
-                            <div class="worker-fields">
-                                <div class="worker-field">
-                                    <div class="row row-divider mt4">
-                                        <div class="form-group col-md-6">
-                                            <label for="workerName">Worker Name</label>
-                                            <input required id="workerName" type="text" class="form-control" name="workerNames">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="workerPosition">Worker Position</label>
-                                            <input required id="workerPosition" type="text" class="form-control" name="workerPositions">
-                                        </div>
-                                    </div>
+                            <div th:if="${not #lists.isEmpty(listOfComponents)}" class="row row-divider">
+
+                                <div class="form-group col-md-6">
+                                    <label >Components(* You can multiselect by holding control button *)</label>
+                                    <select th:field="*{components}" required multiple="multiple">
+                                        <th:block th:each="component : ${listOfComponents}">
+                                            <option th:text="${component.componentName}" th:value="${component.componentId}"></option>
+                                        </th:block>
+                                    </select>
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
                                 </div>
+                                <!-- Add more fields if needed -->
                             </div>
-                            <button type="button" class="btn btn-primary" id="addWorker">Add Worker</button>
+
+
                         </div>
                     </div>
                     <div class="modal-footer">

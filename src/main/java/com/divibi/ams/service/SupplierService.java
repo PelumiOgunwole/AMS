@@ -13,7 +13,6 @@ public interface SupplierService {
 
     Suppliers saveSupplier(Suppliers supplier);
 
-    Suppliers updateSupplier(Long id, Suppliers supplierDetails);
 
     void deleteSupplier(Long id);
 

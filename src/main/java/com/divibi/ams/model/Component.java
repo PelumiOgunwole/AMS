@@ -7,9 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Data
@@ -26,13 +24,10 @@ public class Component {
     private String ATANumber;
 
     // Mapping to suppliers meaning  1 components to many suppliers
-    @OneToMany(mappedBy = "component", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<Suppliers> suppliers = new ArrayList<Suppliers>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "component_supplier")
+    private Set<Suppliers> suppliers = new HashSet<Suppliers>();
 
-    // Mapping to aircraft meaning  many components to 1 aircraft
-//    @ManyToOne
-//    @JoinColumn(name = "aircraft_id")
-//    private Aircraft aircraft;
 
     @Column(name = "name")
     private String componentName;

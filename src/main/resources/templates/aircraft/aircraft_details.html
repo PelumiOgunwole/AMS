@@ -66,8 +66,45 @@
                         <p class="card-text"><span> по отложенному обслуживанию: </span><span th:text="*{deferredMaintenanceTasks}"></span></p>
                         <p class="card-text"><span>Дата следующего обслуживания: </span><span th:text="*{nextMaintenanceDate}"></span></p>
                         <p class="card-text"><span>Дата последнего ремонта: </span><span th:text="*{lastRepairDate}"></span></p>
+
+
                     </div>
+                    <div>
+                        <div  style="color: blue;text-align: center;"  th:if="${not #lists.isEmpty(details.workers)}">
+                            <h5>Workers Assigned to Aircraft</h5>
+                        </div>
+
+                        <ul>
+                            <li th:each="worker : ${details.workers}">
+                                <p class="card-text"><span>Name: </span><span th:text="${worker.name}"></span></p>
+                                <p class="card-text"><span>Position: </span><span th:text="${worker.position}"></span></p>
+                                <p class="card-text"><span>Contact: </span><span th:text="${worker.contactInfo}"></span></p>
+
+
+                                <!-- Add more worker details as needed -->
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div th:if="${not #lists.isEmpty(details.components)}" style="color: blue; text-align: center;">
+                            <h5>Components Of Aircraft</h5>
+                        </div>
+
+
+                        <ul>
+                            <li th:each="component : ${details.components}">
+                                <p class="card-text"><span>Name: </span><span th:text="${component.componentName}"></span></p>
+                                <p class="card-text"><span>Position: </span><span th:text="${component.manufacturer}"></span></p>
+                                <p class="card-text"><span>Contact: </span><span th:text="${component.cost}"></span></p>
+
+
+                                <!-- Add more worker details as needed -->
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
+
 
                 <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -76,120 +113,6 @@
         </div>
     </div>
 </div>
-
-
-<!--<div class="modal fade" id="newAircraftModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header text-center">-->
-<!--                <h4 class="modal-title w-100 font-weight-bold">Новый самолет</h4>-->
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body mx-3">-->
-<!--                <ul class="nav nav-tabs" id="aircraftTabs" role="tablist">-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Tab 1</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--                <form id="dynamicForm" action="#" method="post" th:action="@{/save-aircraft}" th:object="${aircraft}">-->
-<!--                    <div class="tab-content" id="aircraftTabsContent">-->
-<!--                        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">-->
-<!--                            &lt;!&ndash; Tab 1 input fields &ndash;&gt;-->
-<!--                            <div th:if="${#fields.hasErrors('*')}">-->
-<!--                                <div class="alert alert-danger">-->
-<!--                                    <ul>-->
-<!--                                        <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="row row-divider mt4">-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="tailNumber" class="mt4">Tail No</label>-->
-<!--                                    <input required type="text" class="form-control" id="tailNumber" th:field="*{tailNumber}" placeholder="Tail No">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('tailNumber')}" th:errors="*{tailNumber}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="serialNumber" class="mt4">Serial No</label>-->
-<!--                                    <input required type="text" class="form-control" id="serialNumber" th:field="*{serialNumber}" placeholder="Serial No">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="row row-divider">-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="type">Type</label>-->
-<!--                                    <input required type="text" class="form-control" id="type" th:field="*{type}" placeholder="Type">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="capacity">Capacity</label>-->
-<!--                                    <input required type="number" class="form-control" id="capacity" th:field="*{capacity}" placeholder="Capacity">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="row row-divider">-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="baseLocation">Base Location</label>-->
-<!--                                    <input required type="text" class="form-control" id="baseLocation" th:field="*{baseLocation}" placeholder="Base Location">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="currentLocation">Current Location</label>-->
-<!--                                    <input required type="text" class="form-control" id="currentLocation" th:field="*{currentLocation}" placeholder="Current Location">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">-->
-<!--                            &lt;!&ndash; Tab 2 input fields &ndash;&gt;-->
-<!--                            <div class="row row-divider mt4">-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="manufacturer">Manufacturer</label>-->
-<!--                                    <input required type="text" class="form-control" id="manufacturer" th:field="*{manufacturer}" placeholder="Manufacturer">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="technicalStatus">Technical Status</label>-->
-<!--                                    <input required type="text" class="form-control" id="technicalStatus" th:field="*{technicalStatus}" placeholder="Technical Status">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="row row-divider">-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="totalFlightHours">Flight Hours</label>-->
-<!--                                    <input required type="number" class="form-control" id="totalFlightHours" th:field="*{totalFlightHours}" placeholder="Flight Hours">-->
-<!--                                    &lt;!&ndash;                                    +<span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="deferredMaintenanceTasks">Deferred Maintenance Tasks</label>-->
-<!--                                    <input required type="number" class="form-control" id="deferredMaintenanceTasks" th:field="*{deferredMaintenanceTasks}" placeholder="Deferred Maintenance Tasks">-->
-<!--                                    &lt;!&ndash;                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="row row-divider">-->
-<!--                                <div class="form-group col-md-6">-->
-<!--                                    <label for="nextMaintenanceDate">Next Maintenance Date</label>-->
-<!--                                    <input required type="date" class="form-control" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
-<!--                                    &lt;!&ndash;                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">&ndash;&gt;-->
-
-<!--                                </div>-->
-<!--                                &lt;!&ndash; Add more fields if needed &ndash;&gt;-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="modal-footer">-->
-<!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--                        <button type="submit" class="btn btn-primary">Save changes</button>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>

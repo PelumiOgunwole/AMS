@@ -21,9 +21,6 @@ public class Suppliers {
     @Column(name = "contact_info")
     private  String contactInfo;
 
-    // Mapping to component meaning  many suppliers to 1 component
-    @ManyToOne
-    @JoinColumn(name = "component_id")
-    private Component component;
+
 
 }

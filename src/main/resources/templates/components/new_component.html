@@ -296,6 +296,17 @@
                                     <!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
                                 </div>
 
+                                <div th:if="${not #lists.isEmpty(listOfSuppliers)}" class="form-group col-md-6" >
+                                    <label ><h6>Suppliers(* You can multiselect by holding control button *)</h6></label>
+
+                                    <select th:field="*{suppliers}" required multiple="multiple" class="form-control">
+                                        <th:block th:each="supplier : ${listOfSuppliers}">
+                                            <option th:text="${supplier.Name}" th:value="${supplier.supplier_id}"></option>
+                                        </th:block>
+                                    </select>
+                                    <!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
+                                </div>
+
 
                             </div>
                         </div>

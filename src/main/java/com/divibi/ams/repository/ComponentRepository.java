@@ -19,7 +19,7 @@ public interface ComponentRepository extends JpaRepository<Component, Long> {
 //            " LIKE %?1%")
     @Query("SELECT DISTINCT i FROM Component i " +
             "LEFT JOIN FETCH i.suppliers s " +
-            "LEFT JOIN FETCH i.aircraft a " +
+
             "WHERE " +
             "CONCAT(i.componentId, i.componentName, i.manufacturer, i.status, i.description, i.installationDate, " +
             "i.warrantyExpirationDate, i.unscheduledRemoval, i.MTBF, i.MTBUR, i.lifeSpan, i.conditions, i.critical_component, " +

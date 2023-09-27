@@ -80,31 +80,35 @@
             </tr>
         </tbody>
     </table>
-    <div th:if="${totalPage>1}">
-        <div class="row col-sm-10">
-            <div class="row col-sm-2">
-                Total Rows: [[${totalItems}]]
-            </div>
-            <div class="row col-sm-1">
-                <span th:each="i: ${#numbers.sequence(1,totalPage)}">
-                    <a th:if="${currentPage !=i}" th:href="@{'/page/'+ ${i}}">[[${i}]]</a>
-                    <span th:unless="${currentPage !=i}">[[${i}]]</span> &nbsp;
-                </span>
-            </div>
-            <div class="row col-sm-1">
-
-                <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${currentPage+1}}">Следующий</a>
-                <span th:unless="${currentPage < totalPage}"> Следующий</span>
-
-            </div>
-            <div class="row col-sm-1">
-
-                <a th:if="${currentPage < totalPage}" th:href="@{'/page/'+ ${totalPage}}">Последний</a>
-                <span th:unless="${currentPage < totalPage}">Последний</span>
-
-            </div>
-        </div>
-    </div>
+    <nav aria-label="PageNav">
+        <ul class="pagination">
+            <li class="page-item">
+                Total Items [[${totalContent}]] : Page [[${currentPage}]] of [[${totalPage}]]
+            </li>
+            <li class="page-item mx-2">
+                <a th:if="${currentPage > 1}" th:href="@{/components/page/1}">First</a>
+                <span th:unless="${currentPage > 1}">First</span>
+            </li>
+            <li class="page-item mx-2">
+                <a th:if="${currentPage > 1}" th:href="@{'/components/page/' + ${currentPage - 1}}">Previous</a>
+                <span th:unless="${currentPage > 1}">Previous</span>
+            </li>
+            <li class="page-item mx-2">
+            <span th:each="i: ${#numbers.sequence(1, totalPage)}">
+                <a th:if="${i != currentPage}" th:href="@{'/components/page/' + ${i}}">[[${i}]]</a>
+                <span th:unless="${i != currentPage}">[[${i}]]</span>
+            </span>
+            </li>
+            <li class="page-item mx-2">
+                <a th:if="${currentPage < totalPage}" th:href="@{'/components/page/' + ${currentPage + 1}}">Next</a>
+                <span th:unless="${currentPage < totalPage}">Next</span>
+            </li>
+            <li class="page-item mx-2">
+                <a th:if="${currentPage < totalPage}" th:href="@{'/components/page/' + ${totalPage}}">Last</a>
+                <span th:unless="${currentPage < totalPage}">Last</span>
+            </li>
+        </ul>
+    </nav>
 
 </main>
 <div id="modalCompContainer"></div>
