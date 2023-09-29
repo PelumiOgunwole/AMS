@@ -3,6 +3,7 @@ package com.divibi.ams.model;
 //import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -65,15 +66,17 @@ public class Aircraft {
     @NotNull(message = "Field must not be empty")
     @Min(value = 0, message = "Value must be greater than or equal to 0")
     private Long deferredMaintenanceTasks;
-
+    @BatchSize(size = 10)
     @OneToMany( fetch = FetchType.LAZY, cascade= CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "aircraft_worker_id")
     private Set<Worker> workers = new HashSet<Worker>() ;
 
+    @BatchSize(size = 10)
     @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "aircraft_component_id")
     private Set<Component>  components = new HashSet<Component>();
 
+    @BatchSize(size = 10)
     @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "aircraft_maintenance_id")
     private Set<AirCraftMaintenances>  aircraftMaintenances = new HashSet<AirCraftMaintenances>();

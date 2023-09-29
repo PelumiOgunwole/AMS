@@ -136,8 +136,53 @@
                   <input required type="date" class="form-control" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">
 <!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
                 </div>
+
+                <div th:if="${not #lists.isEmpty(listOfWorkers)}" class="form-group col-md-6">
+                  <label ><h6>Workers(* You can multiselect by holding control button *)</h6></label>
+                  <select th:field="*{workers}" required multiple="multiple">
+                    <th:block th:each="worker : ${listOfWorkers}">
+                      <option th:text="${worker.Name}" th:value="${worker.workerId}"></option>
+                    </th:block>
+                  </select>
+                  <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                </div>
                 <!-- Add more fields if needed -->
               </div>
+
+              <div class="row row-divider">
+                <div th:if="${not #lists.isEmpty(listOfComponents)}" class="form-group col-md-6">
+
+                  <div class="form-group col-md-6">
+                    <label >Components(* You can multiselect by holding control button *)</label>
+                    <select th:field="*{components}" required multiple="multiple">
+                      <th:block th:each="component : ${listOfComponents}">
+                        <option th:text="${component.componentName}" th:value="${component.componentId}"></option>
+                      </th:block>
+                    </select>
+                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                  </div>
+                  <!-- Add more fields if needed -->
+                </div>
+
+                <div th:if="${not #lists.isEmpty(listOfMaintenances)}" class="form-group col-md-6">
+
+                  <div class="form-group col-md-6">
+                    <label >Maintenance(* You can multiselect by holding control button *)</label>
+                    <select th:field="*{aircraftMaintenances}" required multiple="multiple">
+                      <th:block th:each="maint : ${listOfMaintenances}">
+                        <option th:text="${maint.maintenanceDescription}" th:value="${maint.maintenanceId}"></option>
+                      </th:block>
+                    </select>
+                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                  </div>
+                  <!-- Add more fields if needed -->
+                </div>
+              </div>
+
+
 
             </div>
           </div>

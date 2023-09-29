@@ -21,27 +21,34 @@ import java.util.List;
 @Service
 public class CalendarService {
 
-    private static final String APPLICATION_NAME = "YourAppName";
+    private static final String APPLICATION_NAME = "AMS";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "src/main/resources/";
 
     // Initialize Google Calendar API
     private Calendar getCalendarService() throws Exception {
-        InputStream in = GoogleCalendarService.class.getResourceAsStream("googlecred.json");
-        GoogleCredentials credentials = ServiceAccountCredentials.fromStream(in)
-                .createScoped(Collections.singletonList(CalendarScopes.CALENDAR));
+        try {
+            InputStream in = GoogleCalendarService.class.getResourceAsStream("/gcred.json");
+            GoogleCredentials credentials = ServiceAccountCredentials.fromStream(in)
+                    .createScoped(Collections.singletonList(CalendarScopes.CALENDAR));
 
-        // Adapt GoogleCredentials to HttpRequestInitializer
-        HttpRequestInitializer requestInitializer = request -> {
-            HttpRequestInitializer httpRequestInitializer =
-                    new HttpCredentialsAdapter(credentials);
-            httpRequestInitializer.initialize(request);
-        };
+            // Adapt GoogleCredentials to HttpRequestInitializer
+            HttpRequestInitializer requestInitializer = request -> {
+                HttpRequestInitializer httpRequestInitializer =
+                        new HttpCredentialsAdapter(credentials);
+                httpRequestInitializer.initialize(request);
+            };
 
-        return new Calendar.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, requestInitializer)
-                .setApplicationName(APPLICATION_NAME)
-                .build();
+            return new Calendar.Builder(GoogleNetHttpTransport.newTrustedTransport(), JSON_FACTORY, requestInitializer)
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+        } catch (Exception e) {
+            // Handle or log the exception
+            e.printStackTrace();
+            throw e; // Rethrow the exception or handle it as needed
+        }
     }
+
 
 
     // Add Event to Google Calendar

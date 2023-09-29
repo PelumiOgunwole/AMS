@@ -62,13 +62,28 @@ public class AircraftController {
         model.addAttribute("listOfMaintenances",maintenances);
         return "aircraft/new_aircraft";
     }
+
+    @GetMapping("/show-update-aircraft-form/{id}")
+    public String showUpdateAircraftForm(@PathVariable (value = "id") Long id, Model model) {
+        Aircraft aircraft = aircraftService.getAircraftById(id);
+        List<Worker> workers = workerRepository.findAll();
+        List<Component> components = componentRepository.findAll();
+        List<AirCraftMaintenances> maintenances = maintenanceRepository.findAll();
+        model.addAttribute("aircraft",aircraft);
+        model.addAttribute("listOfWorkers",workers);
+        model.addAttribute("listOfComponents",components);
+        model.addAttribute("listOfMaintenances",maintenances);
+        return "aircraft/update_aircraft";
+    }
     @GetMapping("/show-aircraft-details/{id}")
     public String showAircraftDetails(@PathVariable (value = "id") Long id, Model model) {
         Aircraft aircraft = aircraftService.getAircraftById(id);
         List<Worker> workers = workerRepository.findAll();
+        List<AirCraftMaintenances> maintenances = maintenanceRepository.findAll();
         List<Component> components = componentRepository.findAll();
         model.addAttribute("listOfWorkers",workers);
         model.addAttribute("listOfComponents",components);
+        model.addAttribute("maintenances",maintenances);
         model.addAttribute("details",aircraft);
         return "aircraft/aircraft_details";
     }
@@ -99,12 +114,7 @@ public class AircraftController {
         return "index";
     }
 
-    @GetMapping("/show-update-aircraft-form/{id}")
-    public String showUpdateAircraftForm(@PathVariable (value = "id") Long id, Model model) {
-        Aircraft aircraft = aircraftService.getAircraftById(id);
-        model.addAttribute("aircraft",aircraft);
-        return "aircraft/update_aircraft";
-    }
+
 
     @GetMapping("/delete-aircraft/{id}")
     public String deleteAircraftById(@PathVariable (value = "id") Long id) {

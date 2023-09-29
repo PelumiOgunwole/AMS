@@ -40,7 +40,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Update Aircraft Maintenance</h4>
+                <h4 class="modal-title w-100 font-weight-bold">Новый самолет</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -53,190 +53,200 @@
                     <li class="nav-item">
                         <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="tab3-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3" aria-selected="false">Tab 3</a>
+                    </li>
+
                 </ul>
-                <form id="dynamicForm" action="#" method="post" th:action="@{/show-update-aircraft-maintenance-form}" th:object="${air}">
+                <form id="dynamicForm" action="#" method="post" th:action="@{/m/save-aircraft-maintenance}" th:object="${air}">
                     <input type="hidden" th:field="*{maintenanceId}">
-                    <div class="row row-divider mt4">
-                        <div class="form-group col-md-6">
-                            <label for="Description" class="mt4">Description</label>
-                            <input required type="text" class="form-control" id="Description" th:field="*{maintenanceDescription}" placeholder="Description">
-                            <!--                                    <span th:if="${#fields.hasErrors('tailNumber')}" th:errors="*{tailNumber}"></span>-->
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="Type" class="mt4">Type</label>
-                            <input required type="text" class="form-control" id="Type" th:field="*{maintenanceType}" placeholder="Serial No">
-                            <!--                                    <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}"></span>-->
-                        </div>
-                    </div>
-                    <div class="row row-divider">
-                        <div class="form-group col-md-6">
-                            <label for="Performed By">Performed By</label>
-                            <input required type="text" class="form-control" id="Performed By" th:field="*{performedBy}" placeholder="Performed By">
-                            <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="Scheduled Date">Scheduled Date</label>
-                            <input required type="date" class="form-control" id="Scheduled Date" th:field="*{scheduledDate}" placeholder="Scheduled Date">
-                            <!--                                    <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>-->
-                        </div>
-                    </div>
-                    <div class="row row-divider">
-                        <div class="form-group col-md-6">
-                            <label for="baseLocation">Base Location</label>
-                            <input type="date" class="form-control" id="baseLocation" th:field="*{performedDate}" placeholder="Base Location">
-                            <!--                                    <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>-->
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="Status">Status</label>
-                            <input required type="text" class="form-control" id="Status" th:field="*{status}" placeholder="Status">
-                            <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
-                        </div>
-                    </div>
+                    <div class="tab-content" id="aircraftTabsContent">
+                        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                            <!-- Tab 1 input fields -->
+                            <div th:if="${#fields.hasErrors('*')}">
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row row-divider mt4">
+                                <div class="form-group col-md-6">
+                                    <label for="Description" class="mt4">Description</label>
+                                    <input required type="text" class="form-control" id="Description" th:field="*{maintenanceDescription}" placeholder="Description">
+                                    <!--                                    <span th:if="${#fields.hasErrors('tailNumber')}" th:errors="*{tailNumber}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Type" class="mt4">Type</label>
+                                    <input required type="text" class="form-control" id="Type" th:field="*{maintenanceType}" placeholder="Serial No">
+                                    <!--                                    <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}"></span>-->
+                                </div>
+                            </div>
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Performed By">Performed By</label>
+                                    <input required type="text" class="form-control" id="Performed By" th:field="*{performedBy}" placeholder="Performed By">
+                                    <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Scheduled Date">Scheduled Date</label>
+                                    <input type="date" class="form-control" id="Scheduled Date" th:field="*{scheduledDate}" th:format="'yyyy-MM-dd'" placeholder="Scheduled Date">                                    <!--                                    <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>-->
+                                </div>
+                            </div>
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="performedDate">Performed Date</label>
+                                    <input type="date" class="form-control" id="performedDate" th:field="*{performedDate}" th:format="'yyyy-MM-dd'" placeholder="Performed Date">                                    <!--                                    <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Status">Status</label>
+                                    <input required type="text" class="form-control" id="Status" th:field="*{status}" placeholder="Status">
+                                    <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
+                                </div>
+                            </div>
 
-                    <div class="row row-divider">
-                        <div class="form-group col-md-6">
-                            <label for="Risk Assessment">Risk Assessment</label>
-                            <input type="text" class="form-control" id="Risk Assessment" th:field="*{riskAssesment}" placeholder="Risk Assessment">
-                            <!--                                    <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>-->
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Risk Assessment">Risk Assessment</label>
+                                    <input type="text" class="form-control" id="Risk Assessment" th:field="*{riskAssesment}" placeholder="Risk Assessment">
+                                    <!--                                    <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Additional Notes">Additional Notes</label>
+                                    <textarea th:cols="30" th:rows="5" th:maxlength="500" class="form-control" id="Additional Notes" th:field="*{additionalNotes}" placeholder="Additional Notes"/>
+                                    <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="Additional Notes">Additional Notes</label>
-                            <textarea th:cols="30" th:rows="5" th:maxlength="500" class="form-control" id="Additional Notes" th:field="*{additionalNotes}" placeholder="Status"/>
-                            <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
-                        </div>
-                    </div>
+                        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                            <!-- Tab 2 input fields -->
+                            <div class="row row-divider mt4">
+                                <div class="form-group col-md-6">
+                                    <label for="ATA Chapter">ATA Chapter</label>
+                                    <input required type="text" class="form-control" id="ATA Chapter" th:field="*{ATAChapter}" placeholder="ATA Chapter">
+                                    <!--                                    <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Fault Code">Fault Code</label>
+                                    <input required type="text" class="form-control" id="Fault Code" th:field="*{faultCode}" placeholder="Fault Code">
+                                    <!--                                    <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>-->
+                                </div>
+                            </div>
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Fault Description">Fault Description</label>
+                                    <input required type="text" class="form-control" id="Fault Description" th:field="*{faultDescription}" placeholder="Fault Description">
+                                    <!--                                    +<span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Corrective Action">Corrective Action</label>
+                                    <input required type="text" class="form-control" id="Corrective Action" th:field="*{correctiveAction}" placeholder="Corrective Action">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                            </div>
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="is Routine">is Routine</label>
+                                    <select required class="form-control" id="is Routine" th:field="*{routine}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
 
-                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-                        <!-- Tab 2 input fields -->
-                        <div class="row row-divider mt4">
-                            <div class="form-group col-md-6">
-                                <label for="ATA Chapter">ATA Chapter</label>
-                                <input required type="text" class="form-control" id="ATA Chapter" th:field="*{ATAChapter}" placeholder="ATA Chapter">
-                                <!--                                    <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Priority">Priority</label>
+                                    <input required type="text" class="form-control" id="Priority" th:field="*{priority}" placeholder="Priority">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                                <!-- Add more fields if needed -->
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="Fault Code">Fault Code</label>
-                                <input required type="text" class="form-control" id="Fault Code" th:field="*{faultCode}" placeholder="Fault Code">
-                                <!--                                    <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>-->
-                            </div>
-                        </div>
-                        <div class="row row-divider">
-                            <div class="form-group col-md-6">
-                                <label for="Fault Description">Fault Description</label>
-                                <input required type="text" class="form-control" id="Fault Description" th:field="*{faultDescription}" placeholder="Fault Description">
-                                <!--                                    +<span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>-->
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="Corrective Action">Corrective Action</label>
-                                <input required type="text" class="form-control" id="Corrective Action" th:field="*{correctiveAction}" placeholder="Corrective Action">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
-                            </div>
-                        </div>
-                        <div class="row row-divider">
-                            <div class="form-group col-md-6">
-                                <label for="is Routine">is Routine</label>
-                                <select required class="form-control" id="is Routine" th:field="*{routine}">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>
 
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Man Hours Required">Man Hours Required</label>
+                                    <input required type="time" class="form-control" id="Man Hours Required" th:field="*{manHoursRequired}" placeholder="">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Tools Required">Tools Required</label>
+                                    <input required type="text" class="form-control" id="Tools Required" th:field="*{toolsRequired}" placeholder="Tools Required">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                                <!-- Add more fields if needed -->
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="Priority">Priority</label>
-                                <input required type="text" class="form-control" id="Priority" th:field="*{priority}" placeholder="Priority">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
-                            </div>
-                            <!-- Add more fields if needed -->
-                        </div>
-
-                        <div class="row row-divider">
-                            <div class="form-group col-md-6">
-                                <label for="Man Hours Required">Man Hours Required</label>
-                                <input required type="time" class="form-control" id="Man Hours Required" th:field="*{manHoursRequired}" placeholder="">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="Tools Required">Tools Required</label>
-                                <input required type="text" class="form-control" id="Tools Required" th:field="*{toolsRequired}" placeholder="Tools Required">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
-                            </div>
-                            <!-- Add more fields if needed -->
-                        </div>
-
-
-                    </div>
-
-                    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                        <!-- Tab 2 input fields -->
-                        <div class="row row-divider mt4">
-                            <div class="form-group col-md-6">
-                                <label for="Parts Required">Parts Required</label>
-                                <input required type="text" class="form-control" id="Parts Required" th:field="*{partsRequired}" placeholder="Parts Required">
-                                <!--                                    <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>-->
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="Fault Code">Cost Estimation</label>
-                                <input required type="number" class="form-control" id="Cost Estimation" th:field="*{costEstimation}" placeholder="Cost Estimation">
-                                <!--                                    <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>-->
-                            </div>
-                        </div>
-                        <div class="row row-divider">
-                            <div class="form-group col-md-6">
-                                <label for="is Defered">is Defered</label>
-                                <select required class="form-control" id="is Defered" th:field="*{deferred}">
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>                                    <!--                                    +<span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>-->
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="Deferral Date">Deferral Date</label>
-                                <input  type="date" class="form-control" id="Deferral Date" th:field="*{deferralDate}" placeholder="">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
-                            </div>
-                        </div>
-                        <div class="row row-divider">
-                            <div class="form-group col-md-6">
-                                <label for="Deferral Justification">Deferral Justification</label>
-                                <input  type="text" class="form-control" id="Deferral Justification" th:field="*{deferalJustification}" placeholder="">
 
 
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="Compliance Certificates">Compliance Certificates</label>
-                                <input required type="text" class="form-control" id="Compliance Certificates" th:field="*{complianceCertificates}" placeholder="Compliance Certificates">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
-                            </div>
-                            <!-- Add more fields if needed -->
                         </div>
 
-                        <div class="row row-divider">
-                            <div class="form-group col-md-6">
-                                <label for="Safety Measures">Man Hours Required</label>
-                                <input required type="text" class="form-control" id="Safety Measures" th:field="*{safetyMeasures}" placeholder="Safety Measures">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                            <!-- Tab 2 input fields -->
+                            <div class="row row-divider mt4">
+                                <div class="form-group col-md-6">
+                                    <label for="Parts Required">Parts Required</label>
+                                    <input required type="text" class="form-control" id="Parts Required" th:field="*{partsRequired}" placeholder="Parts Required">
+                                    <!--                                    <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Fault Code">Cost Estimation</label>
+                                    <input required type="number" class="form-control" id="Cost Estimation" th:field="*{costEstimation}" placeholder="Cost Estimation">
+                                    <!--                                    <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>-->
+                                </div>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="Environmental Impact">Environmental Impact</label>
-                                <input required type="text" class="form-control" id="Environmental Impact" th:field="*{environmentalImpact}" placeholder="Environmental Impact">
-                                <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="is Defered">is Defered</label>
+                                    <select required class="form-control" id="is Defered" th:field="*{deferred}">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>                                    <!--                                    +<span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Deferral Date">Deferral Date</label>
+                                    <input type="date" class="form-control" id="Deferral Date" th:field="*{deferralDate}" th:format="'yyyy-MM-dd'" placeholder="Deferral Date"><!--                                    <input required type="date" class="form-control" id="Scheduled Date" th:field="*{scheduledDate}" placeholder="Scheduled Date">-->
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
                             </div>
-                            <!-- Add more fields if needed -->
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Deferral Justification">Deferral Justification</label>
+                                    <input  type="text" class="form-control" id="Deferral Justification" th:field="*{deferalJustification}" placeholder="">
+
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Compliance Certificates">Compliance Certificates</label>
+                                    <input required type="text" class="form-control" id="Compliance Certificates" th:field="*{complianceCertificates}" placeholder="Compliance Certificates">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                                <!-- Add more fields if needed -->
+                            </div>
+
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Safety Measures">Safety Measures</label>
+                                    <input required type="text" class="form-control" id="Safety Measures" th:field="*{safetyMeasures}" placeholder="Safety Measures">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Environmental Impact">Environmental Impact</label>
+                                    <input required type="text" class="form-control" id="Environmental Impact" th:field="*{environmentalImpact}" placeholder="Environmental Impact">
+                                    <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                                </div>
+                                <!-- Add more fields if needed -->
+                            </div>
+
+
                         </div>
-                    </div>
-                </form>
-            </div>
 
 
-            </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
-
+                </form>
             </div>
         </div>
-
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
