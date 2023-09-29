@@ -37,11 +37,11 @@
 </head>
 <body>
 
-<div class="modal fade" id="newAircraftModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="newAircraftUtilModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Новый самолет</h4>
+                <h4 class="modal-title w-100 font-weight-bold">New Aircraft Utilization</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -55,7 +55,8 @@
                         <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>
                     </li>
                 </ul>
-                <form id="dynamicForm" action="#" method="post" th:action="@{/save-aircraft}" th:object="${aircraft}">
+                <form id="dynamicForm" action="#" method="post" th:action="@{/au/save-aircraft-util}" th:object="${aircraftUtil}">
+                    <input type="hidden" th:field="*{id}">
                     <div class="tab-content" id="aircraftTabsContent">
                         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                             <!-- Tab 1 input fields -->
@@ -68,37 +69,37 @@
                             </div>
                             <div class="row row-divider mt4">
                                 <div class="form-group col-md-6">
-                                    <label for="tailNumber" class="mt4">Tail No</label>
-                                    <input required type="text" class="form-control" id="tailNumber" th:field="*{tailNumber}" placeholder="Tail No">
+                                    <label for="tailNumber" class="mt4">Departure Date</label>
+                                    <input required type="date" class="form-control" id="tailNumber" th:field="*{depDate}" placeholder="yyyy-mm-dd">
 <!--                                    <span th:if="${#fields.hasErrors('tailNumber')}" th:errors="*{tailNumber}"></span>-->
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="serialNumber" class="mt4">Serial No</label>
-                                    <input required type="text" class="form-control" id="serialNumber" th:field="*{serialNumber}" placeholder="Serial No">
+                                    <label for="serialNumber" class="mt4">Arrival Date</label>
+                                    <input required type="date" class="form-control" id="serialNumber" th:field="*{arrivalDate}" placeholder="yyyy-mm-dd">
 <!--                                    <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}"></span>-->
                                 </div>
                             </div>
                             <div class="row row-divider">
                                 <div class="form-group col-md-6">
-                                    <label for="type">Type</label>
-                                    <input required type="text" class="form-control" id="type" th:field="*{type}" placeholder="Type">
+                                    <label for="A/C">A/C</label>
+                                    <input required type="text" class="form-control" id="A/C" th:field="*{AC}" placeholder="A/C">
 <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="capacity">Capacity</label>
-                                    <input required type="number" class="form-control" id="capacity" th:field="*{capacity}" placeholder="Capacity">
+                                    <label for="A/C Type">A/C Type</label>
+                                    <input required type="text" class="form-control" id="A/C Type" th:field="*{acType}" placeholder="A/C Type">
 <!--                                    <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>-->
                                 </div>
                             </div>
                             <div class="row row-divider">
                                 <div class="form-group col-md-6">
-                                    <label for="baseLocation">Base Location</label>
-                                    <input required type="text" class="form-control" id="baseLocation" th:field="*{baseLocation}" placeholder="Base Location">
+                                    <label for="Operation">Operation</label>
+                                    <input required type="text" class="form-control" id="Operation" th:field="*{operation}" placeholder="Operation">
 <!--                                    <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>-->
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="currentLocation">Current Location</label>
-                                    <input required type="text" class="form-control" id="currentLocation" th:field="*{currentLocation}" placeholder="Current Location">
+                                    <label for="Flight">Flight</label>
+                                    <input required type="text" class="form-control" id="Flight" th:field="*{flight}" placeholder="Flight">
 <!--                                    <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
                                 </div>
                             </div>
@@ -107,80 +108,87 @@
                             <!-- Tab 2 input fields -->
                             <div class="row row-divider mt4">
                                 <div class="form-group col-md-6">
-                                    <label for="manufacturer">Manufacturer</label>
-                                    <input required type="text" class="form-control" id="manufacturer" th:field="*{manufacturer}" placeholder="Manufacturer">
+                                    <label for="Serv.Type">Serv.Type</label>
+                                    <input  type="text" class="form-control" id="Serv.Type" th:field="*{servType}" placeholder="Serv.Type">
 <!--                                    <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>-->
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="technicalStatus">Technical Status</label>
-                                    <input required type="text" class="form-control" id="technicalStatus" th:field="*{technicalStatus}" placeholder="Technical Status">
+                                    <label for="Flight Log">Flight Log</label>
+                                    <input required type="text" class="form-control" id="Flight Log" th:field="*{flightLog}" placeholder="Flight Log">
 <!--                                    <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>-->
                                 </div>
                             </div>
                             <div class="row row-divider">
                                 <div class="form-group col-md-6">
-                                    <label for="totalFlightHours">Flight Hours</label>
-                                    <input required type="number" class="form-control" id="totalFlightHours" th:field="*{totalFlightHours}" placeholder="Flight Hours">
+                                    <label for="Per Day">Per Day</label>
+                                    <input required type="number" class="form-control" id="Per Day" th:field="*{perDay}" placeholder="Per Day">
 <!--                                    +<span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>-->
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="deferredMaintenanceTasks">Deferred Maintenance Tasks</label>
-                                    <input required type="number" class="form-control" id="deferredMaintenanceTasks" th:field="*{deferredMaintenanceTasks}" placeholder="Deferred Maintenance Tasks">
+                                    <label for="Hours">Hours</label>
+                                    <input required type="time" class="form-control" id="Hours" th:field="*{hours}" placeholder="Hours">
 <!--                                    <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
                                 </div>
                             </div>
                             <div class="row row-divider">
                                 <div class="form-group col-md-6">
-                                    <label for="nextMaintenanceDate">Next Maintenance Date</label>
-                                    <input required type="date" class="form-control" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">
+                                    <label for="Block Hours">Block Hours</label>
+                                    <input  type="time" class="form-control" id="Block Hours" th:field="*{blockHours}" placeholder="Block Hours">
 <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
 
                                 </div>
-
-
-                                <div th:if="${not #lists.isEmpty(listOfWorkers)}" class="form-group col-md-6">
-                                    <label ><h6>Workers(* You can multiselect by holding control button *)</h6></label>
-                                    <select th:field="*{workers}" required multiple="multiple">
-                                        <th:block th:each="worker : ${listOfWorkers}">
-                                            <option th:text="${worker.Name}" th:value="${worker.workerId}"></option>
-                                        </th:block>
-                                    </select>
+                                <div class="form-group col-md-6">
+                                    <label for="Cycles">Cycles</label>
+                                    <input required type="number" class="form-control" id="Cycles" th:field="*{cycles}" placeholder="Cycles">
                                     <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
 
                                 </div>
                                 <!-- Add more fields if needed -->
                             </div>
-
                             <div class="row row-divider">
-                                <div th:if="${not #lists.isEmpty(listOfComponents)}" class="form-group col-md-6">
+                                <div class="form-group col-md-6">
+                                    <label for="TAH">TAH</label>
+                                    <input required type="time" class="form-control" id="TAH" th:field="*{tah}" placeholder="TAH">
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
 
-                                    <div class="form-group col-md-6">
-                                        <label >Components(* You can multiselect by holding control button *)</label>
-                                        <select th:field="*{components}" required multiple="multiple">
-                                            <th:block th:each="component : ${listOfComponents}">
-                                                <option th:text="${component.componentName}" th:value="${component.componentId}"></option>
-                                            </th:block>
-                                        </select>
-                                        <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
-
-                                    </div>
-                                    <!-- Add more fields if needed -->
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="TAC">TAC</label>
+                                    <input required type="number" class="form-control" id="TAC" th:field="*{tac}" placeholder="TAC">
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
 
-                                <div th:if="${not #lists.isEmpty(listOfMaintenances)}" class="form-group col-md-6">
-
-                                    <div class="form-group col-md-6">
-                                        <label >Maintenance(* You can multiselect by holding control button *)</label>
-                                        <select th:field="*{aircraftMaintenances}" required multiple="multiple">
-                                            <th:block th:each="maint : ${listOfMaintenances}">
-                                                <option th:text="${maint.maintenanceDescription}" th:value="${maint.maintenanceId}"></option>
-                                            </th:block>
-                                        </select>
-                                        <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
-
-                                    </div>
-                                    <!-- Add more fields if needed -->
                                 </div>
+                                <!-- Add more fields if needed -->
+                            </div>
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Dep.">Dep.</label>
+                                    <input required type="text" class="form-control" id="Dep." th:field="*{dep}" placeholder="Dep.">
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Arr.">Arr.</label>
+                                    <input  type="text" class="form-control" id="Arr." th:field="*{arr}" placeholder="Arr.">
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                                </div>
+                                <!-- Add more fields if needed -->
+                            </div>
+                            <div class="row row-divider">
+                                <div class="form-group col-md-6">
+                                    <label for="Dep.">Dep. Time</label>
+                                    <input required type="time" class="form-control" id="Dep. Time" th:field="*{departureTime}" placeholder="Dep. Time">
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="Arr. Time">Arr. Time</label>
+                                    <input required type="time" class="form-control" id="Arr. Time" th:field="*{arrivalTime}" placeholder="Arr. Time">
+                                    <!--                                    <input required type="text" class="form-control datepicker" id="nextMaintenanceDate" th:field="*{nextMaintenanceDate}" placeholder="yyyy-mm-dd">-->
+
+                                </div>
+                                <!-- Add more fields if needed -->
                             </div>
 
 

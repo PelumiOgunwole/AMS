@@ -1,11 +1,13 @@
 package com.divibi.ams.service.impl;
 
+import com.divibi.ams.model.AirCraftMaintenances;
 import com.divibi.ams.model.Aircraft;
 import com.divibi.ams.model.Worker;
 import com.divibi.ams.repository.AircraftRepository;
 import com.divibi.ams.repository.WorkOrderRepository;
 import com.divibi.ams.repository.WorkerRepository;
 import com.divibi.ams.service.AircraftService;
+import com.divibi.ams.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,8 @@ public class AircraftServiceImpl implements AircraftService {
 
     private AircraftRepository aircraftRepository;
     private WorkerRepository workerRepository;
+    @Autowired
+    private CalendarService googleCalendarService;
 
     //@Autowired  // аннотация, указывающая, что это место для автоматической вставки зависимости
     public AircraftServiceImpl(AircraftRepository aircraftRepository,WorkerRepository workerRepository) {
@@ -77,5 +81,14 @@ public class AircraftServiceImpl implements AircraftService {
     public Page<Aircraft> findPaginated(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo-1,pageSize);
         return aircraftRepository.findAll(pageable);
+    }
+
+    public void syncAircraftMaintenanceToGoogleCalendar(Aircraft aircraft) throws Exception {
+        for (AirCraftMaintenances maintenance : aircraft.getAircraftMaintenances()) {
+            Date scheduledDate = maintenance.getScheduledDate();
+            Date performedDate = maintenance.getPerformedDate();
+            String description = maintenance.getMaintenanceDescription();
+            googleCalendarService.addEvent(scheduledDate, performedDate, description);
+        }
     }
 }

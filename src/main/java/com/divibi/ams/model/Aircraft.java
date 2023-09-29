@@ -74,4 +74,8 @@ public class Aircraft {
     @JoinColumn(name = "aircraft_component_id")
     private Set<Component>  components = new HashSet<Component>();
 
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "aircraft_maintenance_id")
+    private Set<AirCraftMaintenances>  aircraftMaintenances = new HashSet<AirCraftMaintenances>();
+
 }

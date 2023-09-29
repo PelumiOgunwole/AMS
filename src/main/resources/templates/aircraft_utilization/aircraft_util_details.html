@@ -39,7 +39,7 @@
 </head>
 <body>
 <!-- Modal -->
-<div class="modal fade" id="aircraftCardModal" tabindex="-1" role="dialog" aria-labelledby="cardModalLabel" aria-hidden="true">
+<div class="modal fade" id="aircraftUtilCardModal" tabindex="-1" role="dialog" aria-labelledby="cardModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -53,19 +53,25 @@
 <!--                    <img class="card-img-top" alt="Placeholder Image">-->
                     <div class="card-body">
                         <h5 class="card-title" style="color: blue; text-align: center;">Детали самолета</h5>
-                        <p class="card-text"><span>Id: </span><span th:text="*{aircraftId}"></span></p>
-                        <p class="card-text"><span>Регистрационный номер: </span><span th:text="*{tailNumber}"></span></p>
-                        <p class="card-text"><span>Серийный номер: </span><span th:text="*{serialNumber}"></span></p>
-                        <p class="card-text"><span>Тип: </span><span th:text="*{type}"></span></p>
-                        <p class="card-text"><span>Вместимость: </span><span th:text="*{capacity}"></span></p>
-                        <p class="card-text"><span>Местоположение базы: </span><span th:text="*{baseLocation}"></span></p>
-                        <p class="card-text"><span>Текущее местоположение: </span><span th:text="*{currentLocation}"></span></p>
-                        <p class="card-text"><span>Производитель: </span><span th:text="*{manufacturer}"></span></p>
-                        <p class="card-text"><span>Технический статус: </span><span th:text="*{technicalStatus}"></span></p>
-                        <p class="card-text"><span>Часы полета: </span><span th:text="*{totalFlightHours}"></span></p>
-                        <p class="card-text"><span> по отложенному обслуживанию: </span><span th:text="*{deferredMaintenanceTasks}"></span></p>
-                        <p class="card-text"><span>Дата следующего обслуживания: </span><span th:text="*{nextMaintenanceDate}"></span></p>
-                        <p class="card-text"><span>Дата последнего ремонта: </span><span th:text="*{lastRepairDate}"></span></p>
+                        <p class="card-text"><span>Id: </span><span th:text="*{id}"></span></p>
+                        <p class="card-text"><span>Dep. Date: </span><span th:text="*{depDate}"></span></p>
+                        <p class="card-text"><span>Arrival Date: </span><span th:text="*{arrivalDate}"></span></p>
+                        <p class="card-text"><span>A/C: </span><span th:text="*{AC}"></span></p>
+                        <p class="card-text"><span>A/C Type: </span><span th:text="*{acType}"></span></p>
+                        <p class="card-text"><span>Operation: </span><span th:text="*{operation}"></span></p>
+                        <p class="card-text"><span>Flight: </span><span th:text="*{flight}"></span></p>
+                        <p class="card-text"><span>Serv. Type: </span><span th:text="*{servType}"></span></p>
+                        <p class="card-text"><span>Flight log: </span><span th:text="*{flightLog}"></span></p>
+                        <p class="card-text"><span>Per Day: </span><span th:text="*{perDay}"></span></p>
+                        <p class="card-text"><span>Hours: </span><span th:text="*{hours}"></span></p>
+                        <p class="card-text"><span>Block Hours: </span><span th:text="*{blockHours}"></span></p>
+                        <p class="card-text"><span>Cycles: </span><span th:text="*{cycles}"></span></p>
+                        <p class="card-text"><span>TAH: </span><span th:text="*{tah}"></span></p>
+                        <p class="card-text"><span>TAC: </span><span th:text="*{tac}"></span></p>
+                        <p class="card-text"><span>Dep.: </span><span th:text="*{dep}"></span></p>
+                        <p class="card-text"><span>Arr.: </span><span th:text="*{arr}"></span></p>
+                        <p class="card-text"><span>Departure Time: </span><span th:text="*{departureTime}"></span></p>
+                        <p class="card-text"><span>Arrival Time: </span><span th:text="*{arrivalTime}"></span></p>
 
 
                     </div>
@@ -103,24 +109,6 @@
                         </ul>
                     </div>
 
-                    <div>
-                        <div th:if="${not #lists.isEmpty(details.aircraftMaintenances)}" style="color: blue; text-align: center;">
-                            <h5> Aircraft Maintenance Details</h5>
-                        </div>
-
-
-                        <ul>
-                            <li th:each="maintenace : ${details.aircraftMaintenances}">
-                                <p class="card-text"><span>Name: </span><span th:text="${maintenace.performedBy}"></span></p>
-<!--                                <p class="card-text"><span>Position: </span><span th:text="${component.manufacturer}"></span></p>-->
-<!--                                <p class="card-text"><span>Contact: </span><span th:text="${component.cost}"></span></p>-->
-
-
-                                <!-- Add more worker details as needed -->
-                            </li>
-                        </ul>
-                    </div>
-
                 </div>
 
 
@@ -140,6 +128,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>-->
 
-</div>
+
 </body>
 </html>

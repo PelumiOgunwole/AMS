@@ -11,6 +11,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
 
     </head>
     <body>
@@ -18,15 +19,14 @@
         <header>
             <h1>Список самолетов</h1>
             <nav>
-                <a th:href="@{/all-maintenance}">обслуживание</a>
+                <a th:href="@{/au/all-aircrafts-util}">Aircraft Utilization</a>
                 <a th:href="@{/all-workers}">Работники</a>
                 <a th:href="@{/components}">Компоненты</a>
                 <a th:href="@{/all-suppliers}">Поставщики</a>
-                <a th:href="@{/all-work-order}">WorkOrder</a>
+                <a th:href="@{/m/aircraft-maintenance}">Aircraft Maintenance</a>
             </nav>
         </header>
         <main>
-        <!--    <a th:href="@{/show-new-aircraft}" class="btn btn-success"><i class="fa fa-arrow-circle-o-right0"></i>&nbsp;New Aircraft</a>-->
             <button id="showFormButton" class="btn btn-dark" data-toggle="">New Aircraft</button>
             <form th:action="@{/search-aircraft}">
                 <input type="hidden" id="currentPage" name="pageNo" th:value="${currentPage}">
@@ -36,10 +36,6 @@
                     <input type="button" onclick="ClearSearch()" value="Clear">
 
             </form>
-
-
-
-
 
             <table id="aircraftsTable">
                 <thead>
@@ -51,6 +47,7 @@
                     <th>Обновлять</th>
                     <th>Удалить</th>
                     <th>детали</th>
+                    <th>Calendar</th>
 
                 </tr>
                 </thead>
@@ -61,28 +58,42 @@
                         <td th:text="${aircrafts.tailNumber}"></td>
                         <td th:text="${aircrafts.serialNumber}"></td>
                         <td th:text="${aircrafts.totalFlightHours}"></td>
-                        <td><th:block th:with="aircraftId=${aircrafts.aircraftId}">
-                            <a class="show-update btn btn-dark"
-                               data-toggle=""
-                               data-target="#updateAircraftModal"
-                               th:data-aircraft-id="${aircrafts.aircraftId}">
+                        <td>
+                            <th:block th:with="aircraftId=${aircrafts.aircraftId}">
+                                <a class="show-update btn btn-dark"
+                                   data-toggle=""
+                                   data-target="#updateAircraftModal"
+                                   th:data-aircraft-id="${aircrafts.aircraftId}">
 
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            </a>
-                        </th:block>
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                            </th:block>
 
                         </td>
 
-        <!--                <td><a id="show-update" data-aircraft-id="${aircraftId}"  class="btn btn-dark"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>-->
                         <td><a th:href="@{/delete-aircraft/{id}(id=${aircrafts.aircraftId})}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
-                        <td><th:block th:with="aircraftId=${aircrafts.aircraftId}">
-                            <a class="show-details btn btn-light"
-                               data-toggle=""
-                               data-target="#aircraftCardModal"
-                               th:data-details-id="${aircrafts.aircraftId}">
-                                <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
-                            </a>
-                        </th:block>
+
+                        <td>
+                            <th:block th:with="aircraftId=${aircrafts.aircraftId}">
+                                <a class="show-details btn btn-light"
+                                   data-toggle=""
+                                   data-target="#aircraftCardModal"
+                                   th:data-details-id="${aircrafts.aircraftId}">
+                                    <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
+                                </a>
+                            </th:block>
+                        </td>
+
+                        <td>
+                            <th:block th:with="aircraftId=${aircrafts.aircraftId}">
+                                <a class="showCalendar btn btn-light"
+                                   data-toggle="modal"
+                                   data-target="#aircraftCalendarCardModal"
+                                   th:data-calendar-id="${aircrafts.aircraftId}">
+                                    <i class="fas fa-info-circle" style="font-size: 24px; color: #0a0a0a;"></i>
+                                </a>
+                            </th:block>
+                        </td>
                     </tr>
 
                 </tbody>
@@ -126,6 +137,49 @@
             Подвал сайта
         </footer>
         <script>
+            function loadCalendar(aircraftId) {
+                var calendarEl = document.getElementById('calendar'); // Find the calendar element
+                if (calendarEl === null) {
+                    console.error("Calendar element not found.");
+                    return;
+                }
+
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    plugins: ['interaction', 'dayGrid'],
+                    // Any other FullCalendar options here
+                });
+
+                // Fetch events for this aircraft
+                fetch(`/syncAndView/${aircraftId}`)
+                    .then(response => response.json())
+                    .then(events => {
+                        calendar.addEventSource(events);
+                        calendar.render();
+                    })
+                    .catch(error => {
+                        console.error("Error fetching events: ", error);
+                    });
+            }
+            // Listen for when the modal is shown
+            document.body.addEventListener('shown.bs.modal', function(event) {
+                if (event.target.id === 'aircraftCalendarCardModal') {
+                    // The button that triggered the modal is inside event.relatedTarget
+                    var button = event.relatedTarget;
+
+                    // Extract the aircraft ID from the button's data attributes
+                    var aircraftId = button.getAttribute('data-calendar-id');
+                    console.log(aircraftId)
+
+                    // Load the calendar
+                    loadCalendar(aircraftId);
+                }
+            });
+
+
+
+
+
+
 
             // Function to close existing modal
             function closeModal() {

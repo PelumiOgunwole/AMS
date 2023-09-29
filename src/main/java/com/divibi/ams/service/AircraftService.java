@@ -18,4 +18,5 @@ public interface AircraftService {
     List<Aircraft> findAirCraftByKeyWord(String keyWord);
     void deleteAircraft(Long id);
     Page<Aircraft> findPaginated(int pageNo, int pageSize);
+    void syncAircraftMaintenanceToGoogleCalendar(Aircraft aircraft)throws Exception;
 }

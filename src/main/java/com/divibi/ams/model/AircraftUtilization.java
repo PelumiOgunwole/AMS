@@ -1,13 +1,22 @@
 package com.divibi.ams.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="aircraft_utilization")
 public class AircraftUtilization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +24,9 @@ public class AircraftUtilization {
     private Long id;
     @Column(name = "dep_date")
     @NotEmpty(message = "Field must not be empty")
-    private String depDate;
+    private Date depDate;
     @Column(name = "arrival_date")
-//    @NotEmpty(message = "Field must not be empty")
+    @NotEmpty(message = "Field must not be empty")
     private Date arrivalDate;
     @Column(name = "AC")
     @NotEmpty(message = "Field must not be empty")
@@ -42,27 +51,27 @@ public class AircraftUtilization {
     private int perDay;
     @Column(name = "hours")
     @NotEmpty(message = "Field must not be empty")
-    private Time hours;
+    private LocalTime hours;
 
     @Column(name = "block_hours")
 //    @NotEmpty(message = "Field must not be empty")
-    private Time blockHours;
+    private LocalTime blockHours;
     @Column(name = "cycles")
     @NotEmpty(message = "Field must not be empty")
     private int cycles;
     @Column(name = "tah")
     @NotEmpty(message = "Field must not be empty")
-    private String tah;
+    private LocalTime tah;
     @Column(name = "tac")
     @NotEmpty(message = "Field must not be empty")
-    private String tac;
+    private double tac;
     @Column(name = "dep")
     @NotEmpty(message = "Field must not be empty")
     private String dep;
     @Column(name = "arr")
     private String arr;
     @Column(name = "departure_time")
-    private Date departureTime;
+    private LocalTime departureTime;
     @Column(name = "arrival_time")
-    private Date arrivalTime;
+    private LocalTime arrivalTime;
 }
