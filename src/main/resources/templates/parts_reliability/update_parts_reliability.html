@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Добавить новый самолет</title>
+  <style>
+    /* Customize modal size and input fields */
+    .modal-dialog {
+      max-width: 50%;
+    }
+
+    /* Style for placing input fields side by side */
+    .side-by-side {
+      /*display: flex;*/
+      justify-content: space-between;
+    }
+    .nav-item {
+      flex: 0 0 48%; /* Adjust the width as needed */
+
+    }
+    .nav-link.active {
+      background-color: black; /* Set your desired color */
+      color: white; /* Set text color for better contrast */
+    }
+
+    /* Style for dividing columns into rows */
+    .row-divider {
+      margin-bottom: 1rem;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="modal fade" id="updatePartsReliabilityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Update Parts Reliability</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <ul class="nav nav-tabs" id="aircraftTabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Tab 1</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>
+          </li>
+        </ul>
+        <form id="dynamicForm" action="#" method="post" th:action="@{/save-parts-reliability}" th:object="${partsReliability}">
+          <input type="hidden" th:field="*{id}">
+          <div class="tab-content" id="aircraftTabsContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+              <!-- Tab 1 input fields -->
+              <div class="row row-divider mt4">
+                <div class="form-group col-md-6">
+                  <label for="Description" class="mt4">Description</label>
+                  <input  type="text" class="form-control" id="Description" th:field="*{description}" placeholder="Tail No">
+<!--                  <span th:if="${#fields.hasErrors('tailNumber')}" th:errors="*{tailNumber}"></span>-->
+
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Pn" class="mt4">Pn</label>
+                  <input  type="text" class="form-control" id="Pn" th:field="*{pn}" placeholder="Serial No">
+<!--                  <span th:if="${#fields.hasErrors('serialNumber')}" th:errors="*{serialNumber}"></span>-->
+
+                </div>
+              </div>
+              <div class="row row-divider">
+                <div class="form-group col-md-6">
+                  <label for="Ata">Ata</label>
+                  <input  type="text" class="form-control" id="Ata" th:field="*{ATA}" placeholder="Type">
+<!--                  <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></span>-->
+
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Ac Group">Ac group</label>
+                  <input  type="number" class="form-control" id="Ac Group" th:field="*{acGroup}" placeholder="Capacity">
+<!--                  <span th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>-->
+
+                </div>
+              </div>
+              <div class="row row-divider">
+                <div class="form-group col-md-6">
+                  <label for="Unit Hours">Unit Hours</label>
+                  <input  type="text" class="form-control" id="Unit Hours" th:field="*{unitHours}" placeholder="Base Location">
+<!--                  <span th:if="${#fields.hasErrors('baseLocation')}" th:errors="*{baseLocation}"></span>-->
+
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Us Rem">Us Rem</label>
+                  <input  type="text" class="form-control" id="Us Rem" th:field="*{usRem}" placeholder="Current Location">
+<!--                  <span th:if="${#fields.hasErrors('currentLocation')}" th:errors="*{currentLocation}"></span>-->
+
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+              <!-- Tab 2 input fields -->
+              <div class="row row-divider mt4">
+                <div class="form-group col-md-6">
+                  <label for="Rate Us Rem">Rate Us Rem</label>
+                  <input  type="text" class="form-control" id="Rate Us Rem" th:field="*{rateUsRem}" placeholder="Manufacturer">
+<!--                  <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span>-->
+
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Failures">Failures</label>
+                  <input  type="text" class="form-control" id="Failures" th:field="*{failures}" placeholder="Technical Status">
+<!--                  <span th:if="${#fields.hasErrors('technicalStatus')}" th:errors="*{technicalStatus}"></span>-->
+
+                </div>
+              </div>
+              <div class="row row-divider">
+                <div class="form-group col-md-6">
+                  <label for="Rate Failures">Rate Failures</label>
+                  <input  type="number" class="form-control" id="Rate Failures" th:field="*{rateFailures}" placeholder="Flight Hours">
+<!--                  <span th:if="${#fields.hasErrors('totalFlightHours')}" th:errors="*{totalFlightHours}"></span>-->
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="No Fault">No Fault</label>
+                  <input  type="number" class="form-control" id="No Fault" th:field="*{noFault}" placeholder="Deferred Maintenance Tasks">
+<!--                  <span th:if="${#fields.hasErrors('deferredMaintenanceTasks')}" th:errors="*{deferredMaintenanceTasks}"></span>-->
+                </div>
+              </div>
+              <div class="row row-divider">
+                <div class="form-group col-md-6">
+                  <label for="MTBF">MTBF</label>
+                  <input required type="date" class="form-control" id="MTBF" th:field="*{MTBF}" placeholder="yyyy-mm-dd">
+<!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
+                </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="MTBUR">MTBUR</label>
+                    <input required type="date" class="form-control" id="MTBUR" th:field="*{MTBUR}" placeholder="yyyy-mm-dd">
+                    <!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
+                  </div>
+
+                  <div class="row row-divider">
+                    <div class="form-group col-md-6">
+                      <label for="MTTUR">MTTUR</label>
+                      <input required type="date" class="form-control" id="MTTUR" th:field="*{MTTUR}" placeholder="yyyy-mm-dd">
+                      <!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
+                    </div>
+
+                      <div class="form-group col-md-6">
+                        <label for="Nff Rate">Nff Rate</label>
+                        <input required type="date" class="form-control" id="Nff Rate" th:field="*{nffRate}" placeholder="yyyy-mm-dd">
+                        <!--                  <span th:if="${#fields.hasErrors('nextMaintenanceDate')}" th:errors="*{nextMaintenanceDate}"></span>-->
+                      </div>
+                    </div>
+
+
+
+
+                <!-- Add more fields if needed -->
+                </div>
+
+
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var updateForm = document.getElementById('dynamicForm');
+
+    if (updateForm) {
+      updateForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Serialize form data
+        var formData = new FormData(updateForm);
+
+        // Perform an asynchronous form submission using Fetch API
+        fetch(updateForm.action, {
+          method: 'POST',
+          body: formData
+        })
+                .then(response => response.json()) // Assuming the server returns JSON
+                .then(data => {
+                  console.log('Server response:', data);
+                  // Handle the response data as needed
+                })
+                .catch(error => {
+                  console.error('An error occurred:', error);
+                  // Handle errors here
+                });
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
+

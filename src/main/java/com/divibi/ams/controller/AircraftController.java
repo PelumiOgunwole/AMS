@@ -140,7 +140,7 @@ public class AircraftController {
     }
 
     @GetMapping("/syncAndView/{aircraftId}")
-    public String syncAndViewAircraftMaintenance(@PathVariable Long aircraftId, Model model) throws Exception {
+    public ResponseEntity<List<Event>> syncAndViewAircraftMaintenance(@PathVariable Long aircraftId, Model model) throws Exception {
         // Assuming you have a method to get Aircraft by Id
         Aircraft aircraft = aircraftService.getAircraftById (aircraftId);
 
@@ -151,9 +151,10 @@ public class AircraftController {
         List<Event> events = calendarService.getEvents();
         model.addAttribute("aircraftEvent", aircraft);
         // Add events to model
-        model.addAttribute("events", events);
+        model.addAttribute("calendarEvents", events);
+        return  ResponseEntity.ok(events);
 
-        return "aircraft/calendar";
+//        return "aircraft/calendar";
     }
 
 }
